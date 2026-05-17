@@ -53,32 +53,33 @@ struct RootView: View {
             }
         }
         .animation(.easeInOut(duration: 0.35), value: showSplash)
+        .overlay(alignment: .top) {
+            OfflineBanner()
+        }
         .dsAccent(accent)
         .environment(router)
         .environment(reachability)
-        .overlay(alignment: .top) {
-            if !reachability.isOnline {
-                OfflineBanner()
-            }
-        }
     }
 }
 
 private struct OfflineBanner: View {
     @Environment(\.dsPalette) private var palette
+    @Environment(NetworkReachability.self) private var reachability
 
     var body: some View {
-        HStack(spacing: 8) {
-            Image(systemName: "wifi.slash")
-                .font(.system(size: 13, weight: .semibold))
-            Text("You\u{2019}re offline · Showing cached results")
-                .font(.dsCaptionSmall)
+        if !reachability.isOnline {
+            HStack(spacing: 8) {
+                Image(systemName: "wifi.slash")
+                    .font(.system(size: 13, weight: .semibold))
+                Text("You\u{2019}re offline · Showing cached results")
+                    .font(.dsCaptionSmall)
+            }
+            .foregroundStyle(palette.text)
+            .padding(.horizontal, 14)
+            .padding(.vertical, 8)
+            .background(.thinMaterial, in: Capsule())
+            .padding(.top, 4)
+            .transition(.move(edge: .top).combined(with: .opacity))
         }
-        .foregroundStyle(palette.text)
-        .padding(.horizontal, 14)
-        .padding(.vertical, 8)
-        .background(.thinMaterial, in: Capsule())
-        .padding(.top, 4)
-        .transition(.move(edge: .top).combined(with: .opacity))
     }
 }
