@@ -1,0 +1,58 @@
+import Foundation
+import Testing
+import SongAPI
+@testable import SongSearch
+
+@MainActor
+@Suite struct AlbumViewModelTests {
+    @Test func initialStateIsIdle() {
+        let (sut, _) = makeSUT()
+        #expect(sut.state == .idle)
+    }
+
+    @Test func startLoadsAlbumAndEntersContentState() async {
+        let (sut, repo) = makeSUT()
+        let album = AlbumFixture.make(id: 12345)
+        repo.stubbedAlbum = album
+
+        await sut.start()
+
+        #expect(repo.albumCalls == [42])
+        #expect(sut.state == .content(album: album))
+    }
+
+    @Test func startEntersEmptyStateWhenAlbumHasNoSongs() async {
+        let (sut, repo) = makeSUT()
+        repo.stubbedAlbum = AlbumFixture.make(songs: [])
+
+        await sut.start()
+
+        #expect(sut.state == .empty)
+    }
+
+    @Test func startEntersErrorStateOnFailure() async {
+        let (sut, repo) = makeSUT()
+        repo.errorToThrow = SampleError.network
+
+        await sut.start()
+
+        if case let .error(message) = sut.state {
+            #expect(message == SampleError.network.localizedDescription)
+        } else {
+            Issue.record("Expected .error, got \(sut.state)")
+        }
+    }
+
+    // MARK: - Helpers
+
+    private func makeSUT() -> (sut: AlbumViewModel, repository: SongRepositorySpy) {
+        let repo = SongRepositorySpy()
+        let sut = AlbumViewModel(collectionId: 42, songRepository: repo)
+        return (sut, repo)
+    }
+}
+
+private enum SampleError: Error, LocalizedError {
+    case network
+    var errorDescription: String? { "Sample network error" }
+}

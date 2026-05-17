@@ -14,4 +14,14 @@ final class AlbumViewModel {
         self.collectionId = collectionId
         self.songRepository = songRepository
     }
+
+    func start() async {
+        state = .loading
+        do {
+            let album = try await songRepository.album(collectionId: collectionId)
+            state = album.songs.isEmpty ? .empty : .content(album: album)
+        } catch {
+            state = .error(message: error.localizedDescription)
+        }
+    }
 }

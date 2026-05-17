@@ -12,7 +12,7 @@ final class SongRepositorySpy: SongRepository, @unchecked Sendable {
     private(set) var albumCalls: [Int] = []
 
     var stubbedSongs: [Song] = []
-    var stubbedAlbumSongs: [Song] = []
+    var stubbedAlbum: Album?
     var errorToThrow: Error?
 
     func searchSongs(term: String, limit: Int, offset: Int) async throws -> [Song] {
@@ -21,9 +21,12 @@ final class SongRepositorySpy: SongRepository, @unchecked Sendable {
         return stubbedSongs
     }
 
-    func songsInAlbum(collectionId: Int) async throws -> [Song] {
+    func album(collectionId: Int) async throws -> Album {
         albumCalls.append(collectionId)
         if let error = errorToThrow { throw error }
-        return stubbedAlbumSongs
+        guard let album = stubbedAlbum else {
+            fatalError("SongRepositorySpy.stubbedAlbum was not set")
+        }
+        return album
     }
 }

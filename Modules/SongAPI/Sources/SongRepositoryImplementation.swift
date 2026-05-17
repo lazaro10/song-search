@@ -27,13 +27,20 @@ public final class SongRepositoryImplementation: SongRepository {
         return response.results.compactMap(Song.init(track:))
     }
 
-    public func songsInAlbum(collectionId: Int) async throws -> [Song] {
+    public func album(collectionId: Int) async throws -> Album {
         let response: ITunesSearchResponse = try await httpClient.request(
             configuration: LookupAlbumRequest(
                 baseURL: environment.itunesBaseURL,
                 collectionId: collectionId
             )
         )
-        return response.results.compactMap(Song.init(track:))
+        guard let album = Album(from: response, collectionId: collectionId) else {
+            throw SongRepositoryError.albumNotFound
+        }
+        return album
     }
+}
+
+public enum SongRepositoryError: Error, Equatable, Sendable {
+    case albumNotFound
 }
