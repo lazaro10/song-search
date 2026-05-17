@@ -1,31 +1,107 @@
 import SwiftUI
 import SongAPI
+import DesignSystem
 
 struct HomeView: View {
+    @Environment(\.dsPalette) private var palette
     @Bindable var viewModel: HomeViewModel
+    @State private var selectedSongForOptions: Song?
 
     var body: some View {
-        VStack(spacing: 24) {
-            Text("Home (Songs)")
-                .font(.title)
+        ScrollView {
+            LazyVStack(spacing: 0) {
+                HomeTitleBar()
+                    .padding(.horizontal, 20)
+                    .padding(.top, 8)
+                    .padding(.bottom, 14)
 
-            NavigationLink("Open Player", value: AppRoute.player(.placeholder))
-            NavigationLink("Open Album", value: AppRoute.album(collectionId: 0))
+                HomeSearchBar(text: $viewModel.searchTerm)
+                    .padding(.horizontal, 20)
+                    .padding(.bottom, 18)
+
+                if viewModel.searchTerm.isEmpty, !viewModel.recentlyPlayed.isEmpty {
+                    RecentlyPlayedRail(songs: viewModel.recentlyPlayed)
+                }
+
+                resultsSection
+            }
+            .padding(.bottom, 32)
         }
-        .padding()
-        .navigationTitle("Songs")
+        .background(palette.background.ignoresSafeArea())
+        .toolbar(.hidden, for: .navigationBar)
+        .task {
+            await viewModel.onAppear()
+        }
+        .onChange(of: viewModel.searchTerm) { _, _ in
+            viewModel.processSearchTermChange()
+        }
+        .sheet(item: $selectedSongForOptions) { song in
+            MoreOptionsView(song: song)
+                .presentationDetents([.medium])
+                .presentationDragIndicator(.visible)
+        }
     }
-}
 
-private extension Song {
-    static let placeholder = Song(
-        id: 0,
-        name: "Placeholder",
-        artistName: "Artist",
-        albumName: "Album",
-        albumId: 0,
-        artworkURL: nil,
-        previewURL: nil,
-        duration: 0
-    )
+    @ViewBuilder
+    private var resultsSection: some View {
+        switch viewModel.state {
+        case .idle:
+            if viewModel.recentlyPlayed.isEmpty {
+                DSEmptyState(
+                    systemImage: "magnifyingglass",
+                    title: "Search for a song",
+                    message: "Type a song or artist name above to start exploring."
+                )
+                .padding(.top, 24)
+            }
+
+        case .loading:
+            HStack { Spacer(); DSSpinner(); Spacer() }
+                .padding(.vertical, 40)
+
+        case let .content(songs):
+            DSSectionHeader(title: "Results for \u{201C}\(viewModel.searchTerm)\u{201D}")
+
+            ForEach(Array(songs.enumerated()), id: \.element.id) { index, song in
+                NavigationLink(value: AppRoute.player(song)) {
+                    SongRow(
+                        song: song,
+                        showDivider: index < songs.count - 1,
+                        onMore: { selectedSongForOptions = song }
+                    )
+                }
+                .buttonStyle(.plain)
+                .onAppear {
+                    if song.id == songs.last?.id {
+                        Task { await viewModel.loadMoreIfNeeded() }
+                    }
+                }
+            }
+
+            if viewModel.isPaginating {
+                VStack(spacing: 6) {
+                    DSSpinner()
+                    Text("Loading more songs…")
+                        .font(.dsCaptionSmall)
+                        .foregroundStyle(palette.textSecondary)
+                }
+                .frame(maxWidth: .infinity)
+                .padding(.vertical, 18)
+            }
+
+        case .empty:
+            DSEmptyState(
+                systemImage: "music.note.list",
+                title: "No songs found",
+                message: "We couldn\u{2019}t find anything for \u{201C}\(viewModel.searchTerm)\u{201D}. Try a different song or artist."
+            )
+
+        case let .error(message):
+            DSEmptyState(
+                systemImage: "exclamationmark.triangle",
+                title: "Something went wrong",
+                message: message
+            )
+        }
+    }
 }

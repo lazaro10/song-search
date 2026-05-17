@@ -18,7 +18,7 @@ struct PlayerView: View {
         .padding()
         .navigationTitle("Now Playing")
         .sheet(isPresented: $showingMoreOptions) {
-            MoreOptionsView()
+            MoreOptionsView(song: viewModel.song)
                 .presentationDetents([.medium])
         }
     }

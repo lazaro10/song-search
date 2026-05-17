@@ -1,0 +1,27 @@
+import SwiftUI
+import SongAPI
+import DesignSystem
+
+struct RecentlyPlayedRail: View {
+    let songs: [Song]
+
+    var body: some View {
+        VStack(alignment: .leading, spacing: 0) {
+            DSSectionHeader(title: "Recently Played")
+
+            ScrollView(.horizontal, showsIndicators: false) {
+                HStack(spacing: 14) {
+                    ForEach(songs) { song in
+                        NavigationLink(value: AppRoute.player(song)) {
+                            RecentlyPlayedCard(song: song)
+                        }
+                        .buttonStyle(.plain)
+                    }
+                }
+                .padding(.horizontal, 20)
+                .padding(.bottom, 20)
+                .padding(.top, 4)
+            }
+        }
+    }
+}
