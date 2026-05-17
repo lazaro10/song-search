@@ -32,6 +32,7 @@ let project = Project(
                 .project(target: "SongAPI", path: "../Modules/SongAPI"),
                 .project(target: "DesignSystem", path: "../Modules/DesignSystem"),
                 .project(target: "AudioPlayer", path: "../Modules/AudioPlayer"),
+                .project(target: "Storage", path: "../Modules/Storage"),
             ],
             settings: .settings(base: baseSettings)
         ),

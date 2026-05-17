@@ -1,11 +1,11 @@
 import SwiftUI
 import SongAPI
+import Storage
 
 enum HomeBuilder {
     @MainActor
-    static func build() -> some View {
+    static func build(recentlyPlayedRepository: any RecentlyPlayedRepository) -> some View {
         let songRepository = SongRepositoryImplementation()
-        let recentlyPlayedRepository = StubRecentlyPlayedRepository()
         let searchHistoryRepository = UserDefaultsSearchHistoryRepository()
         let viewModel = HomeViewModel(
             songRepository: songRepository,

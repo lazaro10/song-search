@@ -1,10 +1,17 @@
 import SwiftUI
 import DesignSystem
+import Storage
 
 struct RootView: View {
     @AppStorage("dsAccent") private var accent: DSAccent = .deepPurple
     @State private var showSplash = true
     @State private var router = AppRouter()
+    @State private var recentlyPlayedRepository: any RecentlyPlayedRepository
+
+    init() {
+        let container = (try? StorageContainer.make()) ?? (try! StorageContainer.makeInMemory())
+        _recentlyPlayedRepository = State(initialValue: SwiftDataRecentlyPlayedRepository(container: container))
+    }
 
     var body: some View {
         @Bindable var router = router
@@ -15,11 +22,14 @@ struct RootView: View {
                     .transition(.opacity)
             } else {
                 NavigationStack(path: $router.path) {
-                    HomeBuilder.build()
+                    HomeBuilder.build(recentlyPlayedRepository: recentlyPlayedRepository)
                         .navigationDestination(for: AppRoute.self) { route in
                             switch route {
                             case let .player(song):
-                                PlayerBuilder.build(song: song)
+                                PlayerBuilder.build(
+                                    song: song,
+                                    recentlyPlayedRepository: recentlyPlayedRepository
+                                )
                             case let .album(collectionId):
                                 AlbumBuilder.build(collectionId: collectionId)
                             }

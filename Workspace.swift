@@ -9,5 +9,6 @@ let workspace = Workspace(
         "Modules/Environment",
         "Modules/Networking",
         "Modules/SongAPI",
+        "Modules/Storage",
     ]
 )

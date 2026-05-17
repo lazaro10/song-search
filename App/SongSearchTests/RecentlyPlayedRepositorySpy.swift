@@ -1,8 +1,9 @@
 import Foundation
 import SongAPI
-@testable import SongSearch
+import Storage
 
-final class RecentlyPlayedRepositorySpy: RecentlyPlayedRepository, @unchecked Sendable {
+@MainActor
+final class RecentlyPlayedRepositorySpy: RecentlyPlayedRepository {
     var stubbedSongs: [Song] = []
     private(set) var addCalls: [Song] = []
     private(set) var recentRequests: [Int] = []

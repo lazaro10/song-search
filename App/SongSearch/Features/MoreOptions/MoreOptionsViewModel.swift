@@ -1,15 +1,16 @@
 import Foundation
 import Observation
 import SongAPI
+import Storage
 
 @MainActor
 @Observable
 final class MoreOptionsViewModel {
     let song: Song
 
-    private let recentlyPlayedRepository: RecentlyPlayedRepository
+    private let recentlyPlayedRepository: any RecentlyPlayedRepository
 
-    init(song: Song, recentlyPlayedRepository: RecentlyPlayedRepository) {
+    init(song: Song, recentlyPlayedRepository: any RecentlyPlayedRepository) {
         self.song = song
         self.recentlyPlayedRepository = recentlyPlayedRepository
     }

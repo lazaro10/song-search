@@ -2,11 +2,13 @@ import Foundation
 import Observation
 import SongAPI
 import AudioPlayer
+import Storage
 
 @MainActor
 @Observable
 final class PlayerViewModel {
     let song: Song
+    let recentlyPlayedRepository: any RecentlyPlayedRepository
 
     private(set) var isLoading = true
     private(set) var errorMessage: String?
@@ -20,14 +22,18 @@ final class PlayerViewModel {
     init(
         song: Song,
         audioPlayer: AudioPlayer,
+        recentlyPlayedRepository: any RecentlyPlayedRepository,
         skipInterval: TimeInterval = 10
     ) {
         self.song = song
         self.audioPlayer = audioPlayer
+        self.recentlyPlayedRepository = recentlyPlayedRepository
         self.skipInterval = skipInterval
     }
 
     func start() async {
+        await recentlyPlayedRepository.add(song)
+
         guard let url = song.previewURL else {
             isLoading = false
             errorMessage = "Preview not available for this song."

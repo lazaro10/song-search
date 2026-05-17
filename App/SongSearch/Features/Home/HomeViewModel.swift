@@ -1,6 +1,7 @@
 import Foundation
 import Observation
 import SongAPI
+import Storage
 
 @MainActor
 @Observable
@@ -12,7 +13,7 @@ final class HomeViewModel {
     private(set) var restoredFromCache = false
 
     private let songRepository: SongRepository
-    private let recentlyPlayedRepository: RecentlyPlayedRepository
+    let recentlyPlayedRepository: any RecentlyPlayedRepository
     private let searchHistoryRepository: SearchHistoryRepository
     private let pageSize: Int
     private let debounceDuration: Duration
@@ -23,7 +24,7 @@ final class HomeViewModel {
 
     init(
         songRepository: SongRepository,
-        recentlyPlayedRepository: RecentlyPlayedRepository,
+        recentlyPlayedRepository: any RecentlyPlayedRepository,
         searchHistoryRepository: SearchHistoryRepository,
         pageSize: Int = 20,
         debounceDuration: Duration = .milliseconds(300)

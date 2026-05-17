@@ -73,7 +73,10 @@ struct PlayerView: View {
             await viewModel.start()
         }
         .sheet(isPresented: $showingMoreOptions) {
-            MoreOptionsBuilder.build(song: viewModel.song) { albumId in
+            MoreOptionsBuilder.build(
+                song: viewModel.song,
+                recentlyPlayedRepository: viewModel.recentlyPlayedRepository
+            ) { albumId in
                 router.navigate(to: .album(collectionId: albumId))
             }
             .presentationDetents([.medium])
