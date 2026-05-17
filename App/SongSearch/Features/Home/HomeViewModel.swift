@@ -9,9 +9,11 @@ final class HomeViewModel {
     private(set) var state: HomeViewState = .idle
     private(set) var isPaginating = false
     private(set) var recentlyPlayed: [Song] = []
+    private(set) var restoredFromCache = false
 
     private let songRepository: SongRepository
     private let recentlyPlayedRepository: RecentlyPlayedRepository
+    private let searchHistoryRepository: SearchHistoryRepository
     private let pageSize: Int
     private let debounceDuration: Duration
 
@@ -22,20 +24,25 @@ final class HomeViewModel {
     init(
         songRepository: SongRepository,
         recentlyPlayedRepository: RecentlyPlayedRepository,
+        searchHistoryRepository: SearchHistoryRepository,
         pageSize: Int = 20,
         debounceDuration: Duration = .milliseconds(300)
     ) {
         self.songRepository = songRepository
         self.recentlyPlayedRepository = recentlyPlayedRepository
+        self.searchHistoryRepository = searchHistoryRepository
         self.pageSize = pageSize
         self.debounceDuration = debounceDuration
     }
 
     func onAppear() async {
-        recentlyPlayed = await recentlyPlayedRepository.recentSongs(limit: 10)
+        async let recent: Void = loadRecentlyPlayed()
+        async let history: Void = restoreLastSearch()
+        _ = await (recent, history)
     }
 
     func processSearchTermChange() {
+        restoredFromCache = false
         debounceTask?.cancel()
         let trimmed = searchTerm.trimmingCharacters(in: .whitespacesAndNewlines)
         if trimmed.isEmpty {
@@ -79,6 +86,19 @@ final class HomeViewModel {
         _ = await debounceTask?.value
     }
 
+    private func loadRecentlyPlayed() async {
+        recentlyPlayed = await recentlyPlayedRepository.recentSongs(limit: 10)
+    }
+
+    private func restoreLastSearch() async {
+        guard let snapshot = await searchHistoryRepository.lastSearch() else { return }
+        guard searchTerm.isEmpty, state == .idle else { return }
+        state = .content(songs: snapshot.songs)
+        restoredFromCache = true
+        currentOffset = snapshot.songs.count
+        hasMore = false
+    }
+
     private func runInitialSearch(term: String) async {
         state = .loading
         currentOffset = 0
@@ -91,7 +111,12 @@ final class HomeViewModel {
             )
             currentOffset = songs.count
             hasMore = songs.count == pageSize
-            state = songs.isEmpty ? .empty : .content(songs: songs)
+            if songs.isEmpty {
+                state = .empty
+            } else {
+                state = .content(songs: songs)
+                await searchHistoryRepository.save(term: term, songs: songs)
+            }
         } catch {
             state = .error(message: error.localizedDescription)
         }

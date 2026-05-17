@@ -6,7 +6,7 @@ import SongAPI
 @MainActor
 @Suite struct HomeViewModelTests {
     @Test func initialStateIsIdle() {
-        let (sut, _, _) = makeSUT()
+        let (sut, _, _, _) = makeSUT()
         #expect(sut.state == .idle)
         #expect(sut.searchTerm.isEmpty)
         #expect(sut.recentlyPlayed.isEmpty)
@@ -14,7 +14,7 @@ import SongAPI
     }
 
     @Test func onAppearLoadsRecentlyPlayed() async {
-        let (sut, _, recentRepo) = makeSUT()
+        let (sut, _, recentRepo, _) = makeSUT()
         recentRepo.stubbedSongs = [
             SongFixture.make(id: 1),
             SongFixture.make(id: 2),
@@ -26,8 +26,49 @@ import SongAPI
         #expect(recentRepo.recentRequests == [10])
     }
 
+    @Test func onAppearRestoresLastSearchSongsWithoutPopulatingSearchTerm() async {
+        let (sut, _, _, historyRepo) = makeSUT()
+        historyRepo.stubbedSnapshot = SearchHistorySnapshot(
+            term: "beatles",
+            songs: [SongFixture.make(id: 1), SongFixture.make(id: 2)]
+        )
+
+        await sut.onAppear()
+
+        #expect(sut.searchTerm.isEmpty)
+        #expect(sut.restoredFromCache == true)
+        if case let .content(songs) = sut.state {
+            #expect(songs.map(\.id) == [1, 2])
+        } else {
+            Issue.record("Expected .content, got \(sut.state)")
+        }
+    }
+
+    @Test func onAppearLeavesStateIdleAndFlagFalseWhenCacheIsEmpty() async {
+        let (sut, _, _, _) = makeSUT()
+        await sut.onAppear()
+        #expect(sut.searchTerm.isEmpty)
+        #expect(sut.restoredFromCache == false)
+        #expect(sut.state == .idle)
+    }
+
+    @Test func userInputClearsRestoredFromCacheFlag() async {
+        let (sut, _, _, historyRepo) = makeSUT()
+        historyRepo.stubbedSnapshot = SearchHistorySnapshot(
+            term: "beatles",
+            songs: [SongFixture.make(id: 1)]
+        )
+        await sut.onAppear()
+        #expect(sut.restoredFromCache == true)
+
+        sut.searchTerm = "a"
+        sut.processSearchTermChange()
+
+        #expect(sut.restoredFromCache == false)
+    }
+
     @Test func emptySearchTermLeavesStateIdleWithoutSearching() async {
-        let (sut, songRepo, _) = makeSUT()
+        let (sut, songRepo, _, _) = makeSUT()
 
         sut.searchTerm = "   "
         sut.processSearchTermChange()
@@ -38,7 +79,7 @@ import SongAPI
     }
 
     @Test func searchTermChangeTriggersSearchAndPopulatesContent() async {
-        let (sut, songRepo, _) = makeSUT()
+        let (sut, songRepo, _, _) = makeSUT()
         songRepo.stubbedSongs = [
             SongFixture.make(id: 1, name: "Yesterday"),
             SongFixture.make(id: 2, name: "Hey Jude"),
@@ -59,7 +100,7 @@ import SongAPI
     }
 
     @Test func searchTermIsTrimmedBeforeQuerying() async {
-        let (sut, songRepo, _) = makeSUT()
+        let (sut, songRepo, _, _) = makeSUT()
         songRepo.stubbedSongs = [SongFixture.make(id: 1)]
 
         sut.searchTerm = "   beatles   "
@@ -69,8 +110,24 @@ import SongAPI
         #expect(songRepo.searchCalls.first?.term == "beatles")
     }
 
-    @Test func emptyResultsGoToEmptyState() async {
-        let (sut, songRepo, _) = makeSUT()
+    @Test func successfulSearchPersistsToHistory() async {
+        let (sut, songRepo, _, historyRepo) = makeSUT()
+        songRepo.stubbedSongs = [
+            SongFixture.make(id: 1),
+            SongFixture.make(id: 2),
+        ]
+
+        sut.searchTerm = "beatles"
+        sut.processSearchTermChange()
+        await sut.waitForPendingSearch()
+
+        #expect(historyRepo.saveCalls.count == 1)
+        #expect(historyRepo.saveCalls.first?.term == "beatles")
+        #expect(historyRepo.saveCalls.first?.songs.map(\.id) == [1, 2])
+    }
+
+    @Test func emptyResultsGoToEmptyStateAndDoNotPersist() async {
+        let (sut, songRepo, _, historyRepo) = makeSUT()
         songRepo.stubbedSongs = []
 
         sut.searchTerm = "xyz"
@@ -78,10 +135,11 @@ import SongAPI
         await sut.waitForPendingSearch()
 
         #expect(sut.state == .empty)
+        #expect(historyRepo.saveCalls.isEmpty)
     }
 
-    @Test func failureGoesToErrorState() async {
-        let (sut, songRepo, _) = makeSUT()
+    @Test func failureGoesToErrorStateAndDoesNotPersist() async {
+        let (sut, songRepo, _, historyRepo) = makeSUT()
         songRepo.errorToThrow = SampleError.network
 
         sut.searchTerm = "anything"
@@ -93,10 +151,11 @@ import SongAPI
         } else {
             Issue.record("Expected .error, got \(sut.state)")
         }
+        #expect(historyRepo.saveCalls.isEmpty)
     }
 
     @Test func loadMoreAppendsResultsWithIncrementedOffset() async {
-        let (sut, songRepo, _) = makeSUT(pageSize: 2)
+        let (sut, songRepo, _, _) = makeSUT(pageSize: 2)
         songRepo.stubbedSongs = [
             SongFixture.make(id: 1),
             SongFixture.make(id: 2),
@@ -121,7 +180,7 @@ import SongAPI
     }
 
     @Test func loadMoreNoOpsWhenLastPageWasShort() async {
-        let (sut, songRepo, _) = makeSUT(pageSize: 5)
+        let (sut, songRepo, _, _) = makeSUT(pageSize: 5)
         songRepo.stubbedSongs = [SongFixture.make(id: 1)]
         sut.searchTerm = "x"
         sut.processSearchTermChange()
@@ -134,7 +193,7 @@ import SongAPI
     }
 
     @Test func loadMoreNoOpsWhenStateIsNotContent() async {
-        let (sut, songRepo, _) = makeSUT()
+        let (sut, songRepo, _, _) = makeSUT()
         await sut.loadMoreIfNeeded()
         #expect(songRepo.searchCalls.isEmpty)
     }
@@ -144,17 +203,20 @@ import SongAPI
     private func makeSUT(pageSize: Int = 20) -> (
         sut: HomeViewModel,
         songRepository: SongRepositorySpy,
-        recentlyPlayedRepository: RecentlyPlayedRepositorySpy
+        recentlyPlayedRepository: RecentlyPlayedRepositorySpy,
+        searchHistoryRepository: SearchHistoryRepositorySpy
     ) {
         let songRepo = SongRepositorySpy()
         let recentRepo = RecentlyPlayedRepositorySpy()
+        let historyRepo = SearchHistoryRepositorySpy()
         let sut = HomeViewModel(
             songRepository: songRepo,
             recentlyPlayedRepository: recentRepo,
+            searchHistoryRepository: historyRepo,
             pageSize: pageSize,
             debounceDuration: .zero
         )
-        return (sut, songRepo, recentRepo)
+        return (sut, songRepo, recentRepo, historyRepo)
     }
 }
 

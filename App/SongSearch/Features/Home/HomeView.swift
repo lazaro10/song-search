@@ -63,7 +63,9 @@ struct HomeView: View {
                 .padding(.vertical, 40)
 
         case let .content(songs):
-            DSSectionHeader(title: "Results for \u{201C}\(viewModel.searchTerm)\u{201D}")
+            if !viewModel.restoredFromCache {
+                DSSectionHeader(title: "Results for \u{201C}\(viewModel.searchTerm)\u{201D}")
+            }
 
             ForEach(Array(songs.enumerated()), id: \.element.id) { index, song in
                 NavigationLink(value: AppRoute.player(song)) {
