@@ -29,6 +29,7 @@ let project = Project(
             ]),
             dependencies: [
                 .project(target: "Network", path: "../Modules/Network"),
+                .project(target: "SongAPI", path: "../Modules/SongAPI"),
             ],
             settings: .settings(base: baseSettings)
         ),
