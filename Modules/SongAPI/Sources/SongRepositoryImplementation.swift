@@ -1,5 +1,5 @@
 import Foundation
-import Network
+import Networking
 import Environment
 
 public final class SongRepositoryImplementation: SongRepository {

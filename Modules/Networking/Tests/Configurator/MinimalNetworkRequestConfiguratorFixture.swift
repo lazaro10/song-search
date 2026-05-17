@@ -1,5 +1,5 @@
 import Foundation
-@testable import Network
+@testable import Networking
 
 struct MinimalNetworkRequestConfiguratorFixture: NetworkRequestConfigurator {
     var baseURL: URL = URL(string: "https://api.example.com")!

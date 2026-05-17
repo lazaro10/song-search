@@ -1,6 +1,6 @@
 import Foundation
 import Testing
-@testable import Network
+@testable import Networking
 
 @Suite struct NetworkDeserializationTests {
     @Test func decodeReturnsValueOnValidJSON() throws {

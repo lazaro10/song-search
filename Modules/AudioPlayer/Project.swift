@@ -8,36 +8,36 @@ let baseSettings: SettingsDictionary = [
 ]
 
 let project = Project(
-    name: "Network",
+    name: "AudioPlayer",
     targets: [
         .target(
-            name: "Network",
+            name: "AudioPlayer",
             destinations: [.iPhone, .iPad],
             product: .staticFramework,
-            bundleId: "com.lazaro.songsearch.network",
+            bundleId: "com.lazaro.songsearch.audioplayer",
             deploymentTargets: deploymentTargets,
             sources: ["Sources/**/*.swift"],
             settings: .settings(base: baseSettings)
         ),
         .target(
-            name: "NetworkTests",
+            name: "AudioPlayerTests",
             destinations: [.iPhone, .iPad],
             product: .unitTests,
-            bundleId: "com.lazaro.songsearch.network.tests",
+            bundleId: "com.lazaro.songsearch.audioplayer.tests",
             deploymentTargets: deploymentTargets,
             sources: ["Tests/**/*.swift"],
             dependencies: [
-                .target(name: "Network"),
+                .target(name: "AudioPlayer"),
             ],
             settings: .settings(base: baseSettings)
         ),
     ],
     schemes: [
         .scheme(
-            name: "Network",
+            name: "AudioPlayer",
             shared: true,
-            buildAction: .buildAction(targets: ["Network"]),
-            testAction: .targets(["NetworkTests"]),
+            buildAction: .buildAction(targets: ["AudioPlayer"]),
+            testAction: .targets(["AudioPlayerTests"]),
             runAction: .runAction(configuration: "Debug"),
             archiveAction: .archiveAction(configuration: "Release")
         ),

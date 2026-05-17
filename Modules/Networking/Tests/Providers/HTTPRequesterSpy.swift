@@ -1,5 +1,5 @@
 import Foundation
-@testable import Network
+@testable import Networking
 
 final class HTTPRequesterSpy: HTTPRequester, @unchecked Sendable {
     struct Call: Equatable {

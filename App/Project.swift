@@ -8,8 +8,8 @@ let baseSettings: SettingsDictionary = [
     "INFOPLIST_KEY_UIApplicationSceneManifest_Generation": "YES",
     "INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents": "YES",
     "INFOPLIST_KEY_UILaunchScreen_Generation": "YES",
-    "INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone": "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight",
-    "INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad": "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight",
+    "INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone": "UIInterfaceOrientationPortrait",
+    "INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad": "UIInterfaceOrientationPortrait",
 ]
 
 let project = Project(
@@ -28,9 +28,10 @@ let project = Project(
                 "SongSearch/Preview Content/**",
             ]),
             dependencies: [
-                .project(target: "Network", path: "../Modules/Network"),
+                .project(target: "Networking", path: "../Modules/Networking"),
                 .project(target: "SongAPI", path: "../Modules/SongAPI"),
                 .project(target: "DesignSystem", path: "../Modules/DesignSystem"),
+                .project(target: "AudioPlayer", path: "../Modules/AudioPlayer"),
             ],
             settings: .settings(base: baseSettings)
         ),

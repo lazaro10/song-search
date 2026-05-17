@@ -1,5 +1,5 @@
 import Foundation
-import Network
+import Networking
 
 final class HTTPClientSpy: HTTPClient, @unchecked Sendable {
     private(set) var receivedConfigurations: [any NetworkRequestConfigurator] = []

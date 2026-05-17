@@ -1,5 +1,5 @@
 import Foundation
-import Network
+import Networking
 
 struct LookupAlbumRequest: NetworkRequestConfigurator {
     let baseURL: URL

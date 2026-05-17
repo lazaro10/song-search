@@ -1,5 +1,5 @@
 import Foundation
-import Network
+import Networking
 
 struct SearchSongsRequest: NetworkRequestConfigurator {
     let baseURL: URL

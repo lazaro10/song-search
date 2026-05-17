@@ -1,5 +1,5 @@
 import Foundation
-@testable import Network
+@testable import Networking
 
 enum NetworkRequestConfiguratorFixture {
     static func make(

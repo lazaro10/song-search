@@ -1,5 +1,5 @@
 import Foundation
-@testable import Network
+@testable import Networking
 
 final class NetworkDeserializableSpy: NetworkDeserializable, @unchecked Sendable {
     private(set) var receivedData: [Data] = []

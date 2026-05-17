@@ -4,9 +4,10 @@ let workspace = Workspace(
     name: "SongSearch",
     projects: [
         "App",
+        "Modules/AudioPlayer",
         "Modules/DesignSystem",
         "Modules/Environment",
-        "Modules/Network",
+        "Modules/Networking",
         "Modules/SongAPI",
     ]
 )

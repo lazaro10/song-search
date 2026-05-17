@@ -8,40 +8,36 @@ let baseSettings: SettingsDictionary = [
 ]
 
 let project = Project(
-    name: "SongAPI",
+    name: "Networking",
     targets: [
         .target(
-            name: "SongAPI",
+            name: "Networking",
             destinations: [.iPhone, .iPad],
             product: .staticFramework,
-            bundleId: "com.lazaro.songsearch.songapi",
+            bundleId: "com.lazaro.songsearch.networking",
             deploymentTargets: deploymentTargets,
             sources: ["Sources/**/*.swift"],
-            dependencies: [
-                .project(target: "Networking", path: "../Networking"),
-                .project(target: "Environment", path: "../Environment"),
-            ],
             settings: .settings(base: baseSettings)
         ),
         .target(
-            name: "SongAPITests",
+            name: "NetworkingTests",
             destinations: [.iPhone, .iPad],
             product: .unitTests,
-            bundleId: "com.lazaro.songsearch.songapi.tests",
+            bundleId: "com.lazaro.songsearch.networking.tests",
             deploymentTargets: deploymentTargets,
             sources: ["Tests/**/*.swift"],
             dependencies: [
-                .target(name: "SongAPI"),
+                .target(name: "Networking"),
             ],
             settings: .settings(base: baseSettings)
         ),
     ],
     schemes: [
         .scheme(
-            name: "SongAPI",
+            name: "Networking",
             shared: true,
-            buildAction: .buildAction(targets: ["SongAPI"]),
-            testAction: .targets(["SongAPITests"]),
+            buildAction: .buildAction(targets: ["Networking"]),
+            testAction: .targets(["NetworkingTests"]),
             runAction: .runAction(configuration: "Debug"),
             archiveAction: .archiveAction(configuration: "Release")
         ),
