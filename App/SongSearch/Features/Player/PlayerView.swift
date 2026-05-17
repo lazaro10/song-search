@@ -5,6 +5,7 @@ import DesignSystem
 struct PlayerView: View {
     @Environment(\.dsPalette) private var palette
     @Environment(\.dismiss) private var dismiss
+    @Environment(AppRouter.self) private var router
 
     let viewModel: PlayerViewModel
     @State private var showingMoreOptions = false
@@ -72,9 +73,11 @@ struct PlayerView: View {
             await viewModel.start()
         }
         .sheet(isPresented: $showingMoreOptions) {
-            MoreOptionsView(song: viewModel.song)
-                .presentationDetents([.medium])
-                .presentationDragIndicator(.visible)
+            MoreOptionsBuilder.build(song: viewModel.song) { albumId in
+                router.navigate(to: .album(collectionId: albumId))
+            }
+            .presentationDetents([.medium])
+            .presentationDragIndicator(.visible)
         }
     }
 }

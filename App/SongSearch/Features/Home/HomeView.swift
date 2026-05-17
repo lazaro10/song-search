@@ -4,6 +4,7 @@ import DesignSystem
 
 struct HomeView: View {
     @Environment(\.dsPalette) private var palette
+    @Environment(AppRouter.self) private var router
     @Bindable var viewModel: HomeViewModel
     @State private var selectedSongForOptions: Song?
 
@@ -36,9 +37,11 @@ struct HomeView: View {
             viewModel.processSearchTermChange()
         }
         .sheet(item: $selectedSongForOptions) { song in
-            MoreOptionsView(song: song)
-                .presentationDetents([.medium])
-                .presentationDragIndicator(.visible)
+            MoreOptionsBuilder.build(song: song) { albumId in
+                router.navigate(to: .album(collectionId: albumId))
+            }
+            .presentationDetents([.medium])
+            .presentationDragIndicator(.visible)
         }
     }
 
