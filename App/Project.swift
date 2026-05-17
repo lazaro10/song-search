@@ -27,6 +27,9 @@ let project = Project(
                 "SongSearch/Assets.xcassets",
                 "SongSearch/Preview Content/**",
             ]),
+            dependencies: [
+                .project(target: "Network", path: "../Modules/Network"),
+            ],
             settings: .settings(base: baseSettings)
         ),
         .target(
