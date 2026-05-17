@@ -1,6 +1,8 @@
 import SwiftUI
+import DesignSystem
 
 struct RootView: View {
+    @AppStorage("dsAccent") private var accent: DSAccent = .deepPurple
     @State private var showSplash = true
     @State private var navigationPath = NavigationPath()
 
@@ -8,6 +10,7 @@ struct RootView: View {
         Group {
             if showSplash {
                 SplashView(onComplete: { showSplash = false })
+                    .transition(.opacity)
             } else {
                 NavigationStack(path: $navigationPath) {
                     HomeBuilder.build()
@@ -20,7 +23,10 @@ struct RootView: View {
                             }
                         }
                 }
+                .transition(.opacity)
             }
         }
+        .animation(.easeInOut(duration: 0.35), value: showSplash)
+        .dsAccent(accent)
     }
 }

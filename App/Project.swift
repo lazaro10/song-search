@@ -30,6 +30,7 @@ let project = Project(
             dependencies: [
                 .project(target: "Network", path: "../Modules/Network"),
                 .project(target: "SongAPI", path: "../Modules/SongAPI"),
+                .project(target: "DesignSystem", path: "../Modules/DesignSystem"),
             ],
             settings: .settings(base: baseSettings)
         ),
