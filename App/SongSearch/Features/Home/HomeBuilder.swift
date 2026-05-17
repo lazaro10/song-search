@@ -4,8 +4,10 @@ import Storage
 
 enum HomeBuilder {
     @MainActor
-    static func build(recentlyPlayedRepository: any RecentlyPlayedRepository) -> some View {
-        let songRepository = SongRepositoryImplementation()
+    static func build(
+        songRepository: any SongRepository,
+        recentlyPlayedRepository: any RecentlyPlayedRepository
+    ) -> some View {
         let searchHistoryRepository = UserDefaultsSearchHistoryRepository()
         let viewModel = HomeViewModel(
             songRepository: songRepository,
