@@ -5,7 +5,6 @@ struct AlbumTopBar: View {
     @Environment(\.dsPalette) private var palette
 
     let onBack: () -> Void
-    let onMore: () -> Void
 
     var body: some View {
         HStack {
@@ -16,7 +15,7 @@ struct AlbumTopBar: View {
                 .tracking(0.4)
                 .foregroundStyle(palette.textSecondary)
             Spacer()
-            circleButton(systemImage: "ellipsis", action: onMore)
+            Color.clear.frame(width: 36, height: 36)
         }
         .padding(.horizontal, 16)
         .padding(.top, 8)

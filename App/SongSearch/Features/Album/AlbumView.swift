@@ -37,10 +37,7 @@ struct AlbumView: View {
             }
 
             VStack {
-                AlbumTopBar(
-                    onBack: { dismiss() },
-                    onMore: {}
-                )
+                AlbumTopBar(onBack: { dismiss() })
                 Spacer()
             }
         }

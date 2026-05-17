@@ -29,21 +29,6 @@ struct MoreOptionsView: View {
                     .buttonStyle(.plain)
                 }
 
-                Button {
-                    Task {
-                        await viewModel.addToRecentlyPlayed()
-                        dismiss()
-                    }
-                } label: {
-                    actionRow(
-                        icon: "clock.badge.plus",
-                        label: "Add to Recently Played",
-                        sub: "Save for later",
-                        showDivider: true
-                    )
-                }
-                .buttonStyle(.plain)
-
                 ShareLink(item: viewModel.shareMessage) {
                     actionRow(
                         icon: "square.and.arrow.up",

@@ -10,12 +10,6 @@ struct HomeTitleBar: View {
                 .font(.dsLargeTitle)
                 .foregroundStyle(palette.text)
             Spacer()
-            ZStack {
-                Circle().fill(palette.surface).frame(width: 36, height: 36)
-                Image(systemName: "music.note")
-                    .font(.system(size: 18, weight: .medium))
-                    .foregroundStyle(.tint)
-            }
         }
     }
 }

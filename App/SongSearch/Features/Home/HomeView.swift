@@ -37,10 +37,7 @@ struct HomeView: View {
             viewModel.processSearchTermChange()
         }
         .sheet(item: $selectedSongForOptions) { song in
-            MoreOptionsBuilder.build(
-                song: song,
-                recentlyPlayedRepository: viewModel.recentlyPlayedRepository
-            ) { albumId in
+            MoreOptionsBuilder.build(song: song) { albumId in
                 router.navigate(to: .album(collectionId: albumId))
             }
             .presentationDetents([.medium])
