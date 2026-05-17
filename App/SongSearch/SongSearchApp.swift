@@ -4,7 +4,7 @@ import SwiftUI
 struct SongSearchApp: App {
     var body: some Scene {
         WindowGroup {
-            ContentView()
+            RootView()
         }
     }
 }
