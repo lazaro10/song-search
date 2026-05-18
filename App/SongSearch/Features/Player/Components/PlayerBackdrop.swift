@@ -40,5 +40,6 @@ struct PlayerBackdrop: View {
             }
         }
         .ignoresSafeArea()
+        .accessibilityHidden(true)
     }
 }

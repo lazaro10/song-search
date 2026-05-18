@@ -19,5 +19,8 @@ public struct DSSpinner: View {
             .rotationEffect(.degrees(isAnimating ? 360 : 0))
             .animation(.linear(duration: 0.85).repeatForever(autoreverses: false), value: isAnimating)
             .onAppear { isAnimating = true }
+            .accessibilityElement()
+            .accessibilityLabel("Loading")
+            .accessibilityAddTraits(.updatesFrequently)
     }
 }

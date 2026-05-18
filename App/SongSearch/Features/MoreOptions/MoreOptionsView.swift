@@ -80,6 +80,7 @@ struct MoreOptionsView: View {
                     .font(.system(size: 18, weight: .medium))
                     .foregroundStyle(.tint)
             }
+            .accessibilityHidden(true)
 
             VStack(alignment: .leading, spacing: 1) {
                 Text(label)
@@ -95,6 +96,7 @@ struct MoreOptionsView: View {
             Image(systemName: "chevron.right")
                 .font(.system(size: 14, weight: .semibold))
                 .foregroundStyle(palette.textTertiary)
+                .accessibilityHidden(true)
         }
         .padding(.horizontal, 20)
         .padding(.vertical, 14)
@@ -105,7 +107,10 @@ struct MoreOptionsView: View {
                     .fill(palette.hairline)
                     .frame(height: 0.5)
                     .padding(.leading, 74)
+                    .accessibilityHidden(true)
             }
         }
+        .accessibilityElement(children: .combine)
+        .accessibilityLabel("\(label). \(sub)")
     }
 }

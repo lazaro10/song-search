@@ -43,6 +43,24 @@ import SongAPI
         }
     }
 
+    @Test func startCanBeCalledAgainToRetryAfterFailure() async {
+        let (sut, repo) = makeSUT()
+        repo.errorToThrow = SampleError.network
+        await sut.start()
+        if case .error = sut.state {} else {
+            Issue.record("Expected .error, got \(sut.state)")
+        }
+
+        repo.errorToThrow = nil
+        repo.stubbedAlbum = AlbumFixture.make(id: 42)
+        await sut.start()
+
+        if case .content = sut.state {} else {
+            Issue.record("Expected .content after retry, got \(sut.state)")
+        }
+        #expect(repo.albumCalls == [42, 42])
+    }
+
     // MARK: - Helpers
 
     private func makeSUT() -> (sut: AlbumViewModel, repository: SongRepositorySpy) {

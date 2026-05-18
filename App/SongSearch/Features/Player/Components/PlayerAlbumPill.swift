@@ -14,6 +14,7 @@ struct PlayerAlbumPill: View {
                     Image(systemName: "opticaldisc")
                         .font(.system(size: 13, weight: .medium))
                         .foregroundStyle(palette.textSecondary)
+                        .accessibilityHidden(true)
                     Text("From the album · \(albumName)")
                         .font(.dsCaption)
                         .foregroundStyle(palette.text)
@@ -28,6 +29,8 @@ struct PlayerAlbumPill: View {
                 )
             }
             .buttonStyle(.plain)
+            .accessibilityLabel("From the album \(albumName)")
+            .accessibilityHint("Opens the album")
         }
     }
 }

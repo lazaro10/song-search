@@ -12,6 +12,7 @@ struct PlayerControls: View {
     var body: some View {
         HStack(spacing: 36) {
             secondaryButton(systemImage: "backward.fill", size: 26, action: onSkipBack)
+                .accessibilityLabel("Skip backward")
 
             Button(action: onPlayPause) {
                 ZStack {
@@ -26,8 +27,10 @@ struct PlayerControls: View {
                 }
             }
             .buttonStyle(.plain)
+            .accessibilityLabel(isPlaying ? "Pause" : "Play")
 
             secondaryButton(systemImage: "forward.fill", size: 26, action: onSkipForward)
+                .accessibilityLabel("Skip forward")
         }
         .padding(.top, 34)
     }

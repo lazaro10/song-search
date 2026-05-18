@@ -29,6 +29,9 @@ struct AlbumHeader: View {
                 .padding(.top, 2)
         }
         .padding(.horizontal, 24)
+        .accessibilityElement(children: .combine)
+        .accessibilityLabel("\(album.name) by \(album.artistName). \(metaLine)")
+        .accessibilityAddTraits(.isHeader)
     }
 
     private var metaLine: String {

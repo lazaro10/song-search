@@ -38,5 +38,6 @@ struct AlbumBackdrop: View {
             }
         }
         .ignoresSafeArea()
+        .accessibilityHidden(true)
     }
 }

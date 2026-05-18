@@ -13,6 +13,7 @@ struct AlbumActions: View {
                 HStack(spacing: 8) {
                     Image(systemName: "play.fill")
                         .font(.system(size: 14, weight: .bold))
+                        .accessibilityHidden(true)
                     Text("Play")
                         .font(.dsBody)
                 }
@@ -22,11 +23,14 @@ struct AlbumActions: View {
                 .shadow(color: Color.accentColor.opacity(0.3), radius: 8, y: 4)
             }
             .buttonStyle(.plain)
+            .accessibilityLabel("Play")
+            .accessibilityHint("Plays the album from the first track")
 
             Button(action: onShuffle) {
                 HStack(spacing: 8) {
                     Image(systemName: "shuffle")
                         .font(.system(size: 14, weight: .bold))
+                        .accessibilityHidden(true)
                     Text("Shuffle")
                         .font(.dsBody)
                 }
@@ -39,6 +43,8 @@ struct AlbumActions: View {
                 )
             }
             .buttonStyle(.plain)
+            .accessibilityLabel("Shuffle")
+            .accessibilityHint("Plays a random track from the album")
         }
         .padding(.horizontal, 20)
     }

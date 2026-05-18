@@ -18,6 +18,9 @@ struct PlayerProgress: View {
             timestamps
         }
         .padding(.horizontal, 28)
+        .accessibilityElement(children: .ignore)
+        .accessibilityLabel("Playback progress")
+        .accessibilityValue("\(format(currentTime)) of \(format(duration))")
     }
 
     private var progressBar: some View {

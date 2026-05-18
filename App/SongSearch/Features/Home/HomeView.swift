@@ -105,7 +105,9 @@ struct HomeView: View {
             DSEmptyState(
                 systemImage: "exclamationmark.triangle",
                 title: "Something went wrong",
-                message: message
+                message: message,
+                actionTitle: "Try Again",
+                action: { Task { await viewModel.retry() } }
             )
         }
     }

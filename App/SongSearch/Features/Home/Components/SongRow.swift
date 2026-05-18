@@ -23,6 +23,8 @@ struct SongRow: View {
                     .foregroundStyle(palette.textSecondary)
                     .lineLimit(1)
             }
+            .accessibilityElement(children: .combine)
+            .accessibilityLabel("\(song.name), \(song.artistName), \(formatDuration(song.duration))")
 
             Spacer(minLength: 4)
 
@@ -30,6 +32,7 @@ struct SongRow: View {
                 .font(.dsCaption)
                 .foregroundStyle(palette.textSecondary)
                 .monospacedDigit()
+                .accessibilityHidden(true)
 
             Button(action: onMore) {
                 Image(systemName: "ellipsis")
@@ -39,6 +42,7 @@ struct SongRow: View {
                     .contentShape(Rectangle())
             }
             .buttonStyle(.plain)
+            .accessibilityLabel("More options for \(song.name)")
         }
         .padding(.horizontal, 12)
         .padding(.vertical, 8)
@@ -49,6 +53,7 @@ struct SongRow: View {
                     .fill(palette.hairline)
                     .frame(height: 0.5)
                     .padding(.leading, 72)
+                    .accessibilityHidden(true)
             }
         }
     }

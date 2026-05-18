@@ -82,6 +82,15 @@ final class HomeViewModel {
         }
     }
 
+    /// Re-runs the last failed search. Wired to the "Try Again" button on the
+    /// error state. No-op when there's no search term.
+    func retry() async {
+        debounceTask?.cancel()
+        let trimmed = searchTerm.trimmingCharacters(in: .whitespacesAndNewlines)
+        guard !trimmed.isEmpty else { return }
+        await runInitialSearch(term: trimmed)
+    }
+
     // Test hook: awaits any in-flight debounced search.
     func waitForPendingSearch() async {
         _ = await debounceTask?.value

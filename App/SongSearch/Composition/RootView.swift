@@ -71,6 +71,7 @@ private struct OfflineBanner: View {
             HStack(spacing: 8) {
                 Image(systemName: "wifi.slash")
                     .font(.system(size: 13, weight: .semibold))
+                    .accessibilityHidden(true)
                 Text("You\u{2019}re offline · Showing cached results")
                     .font(.dsCaptionSmall)
             }
@@ -80,6 +81,8 @@ private struct OfflineBanner: View {
             .background(.thinMaterial, in: Capsule())
             .padding(.top, 4)
             .transition(.move(edge: .top).combined(with: .opacity))
+            .accessibilityElement(children: .combine)
+            .accessibilityLabel("Offline. Showing cached results.")
         }
     }
 }

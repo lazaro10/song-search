@@ -9,13 +9,17 @@ struct AlbumTopBar: View {
     var body: some View {
         HStack {
             circleButton(systemImage: "chevron.left", action: onBack)
+                .accessibilityLabel("Back")
             Spacer()
             Text("ALBUM")
                 .font(.dsLabelUppercase)
                 .tracking(0.4)
                 .foregroundStyle(palette.textSecondary)
+                .accessibilityAddTraits(.isHeader)
             Spacer()
-            Color.clear.frame(width: 36, height: 36)
+            Color.clear
+                .frame(width: 36, height: 36)
+                .accessibilityHidden(true)
         }
         .padding(.horizontal, 16)
         .padding(.top, 8)

@@ -20,5 +20,8 @@ struct RecentlyPlayedCard: View {
                 .lineLimit(1)
         }
         .frame(width: 96, alignment: .leading)
+        .accessibilityElement(children: .combine)
+        .accessibilityLabel("\(song.name), \(song.artistName)")
+        .accessibilityHint("Opens the player")
     }
 }

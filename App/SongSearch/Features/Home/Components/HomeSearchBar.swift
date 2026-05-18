@@ -31,6 +31,7 @@ struct HomeSearchBar: View {
                         .background(Circle().fill(palette.textTertiary))
                 }
                 .buttonStyle(.plain)
+                .accessibilityLabel("Clear search")
             }
         }
         .padding(.horizontal, 12)

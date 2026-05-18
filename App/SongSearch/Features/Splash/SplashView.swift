@@ -53,5 +53,7 @@ struct SplashView: View {
             try? await Task.sleep(for: .seconds(1.5))
             onComplete()
         }
+        .accessibilityElement(children: .combine)
+        .accessibilityLabel("Song Search. Loading.")
     }
 }

@@ -10,13 +10,16 @@ struct PlayerTopBar: View {
     var body: some View {
         HStack {
             circleButton(systemImage: "chevron.left", action: onBack)
+                .accessibilityLabel("Back")
             Spacer()
             Text("NOW PLAYING")
                 .font(.dsLabelUppercase)
                 .tracking(0.4)
                 .foregroundStyle(palette.textSecondary)
+                .accessibilityAddTraits(.isHeader)
             Spacer()
             circleButton(systemImage: "ellipsis", action: onMore)
+                .accessibilityLabel("More options")
         }
         .padding(.horizontal, 16)
         .padding(.top, 8)

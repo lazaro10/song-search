@@ -11,8 +11,16 @@ struct CoverArtView: View {
     let url: URL?
     let size: CGFloat
     let cornerRadius: CGFloat
+    let accessibilityLabel: String?
 
     @State private var image: Image?
+
+    init(url: URL?, size: CGFloat, cornerRadius: CGFloat, accessibilityLabel: String? = nil) {
+        self.url = url
+        self.size = size
+        self.cornerRadius = cornerRadius
+        self.accessibilityLabel = accessibilityLabel
+    }
 
     var body: some View {
         Group {
@@ -30,6 +38,7 @@ struct CoverArtView: View {
         .task(id: taskID) {
             await loadImage()
         }
+        .modifier(AccessibilityModifier(label: accessibilityLabel))
     }
 
     private var taskID: String {
@@ -72,5 +81,22 @@ struct CoverArtView: View {
             .font(.system(size: size * 0.4, weight: .medium))
             .foregroundStyle(palette.textSecondary)
             .frame(maxWidth: .infinity, maxHeight: .infinity)
+    }
+}
+
+/// Applies an accessibility label when provided, otherwise hides the cover
+/// from assistive tech (so adjacent text isn't read twice).
+private struct AccessibilityModifier: ViewModifier {
+    let label: String?
+
+    func body(content: Content) -> some View {
+        if let label {
+            content
+                .accessibilityElement()
+                .accessibilityLabel(label)
+                .accessibilityAddTraits(.isImage)
+        } else {
+            content.accessibilityHidden(true)
+        }
     }
 }

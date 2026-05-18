@@ -198,6 +198,32 @@ import SongAPI
         #expect(songRepo.searchCalls.isEmpty)
     }
 
+    @Test func retryReRunsLastSearchFromOffsetZero() async {
+        let (sut, songRepo, _, _) = makeSUT()
+        songRepo.errorToThrow = SampleError.network
+        sut.searchTerm = "beatles"
+        sut.processSearchTermChange()
+        await sut.waitForPendingSearch()
+        #expect({ if case .error = sut.state { return true }; return false }())
+
+        songRepo.errorToThrow = nil
+        songRepo.stubbedSongs = [SongFixture.make(id: 1)]
+        await sut.retry()
+
+        #expect(songRepo.searchCalls.last == .init(term: "beatles", limit: 20, offset: 0))
+        if case let .content(songs) = sut.state {
+            #expect(songs.map(\.id) == [1])
+        } else {
+            Issue.record("Expected .content, got \(sut.state)")
+        }
+    }
+
+    @Test func retryNoOpsWhenSearchTermIsEmpty() async {
+        let (sut, songRepo, _, _) = makeSUT()
+        await sut.retry()
+        #expect(songRepo.searchCalls.isEmpty)
+    }
+
     // MARK: - Helpers
 
     private func makeSUT(pageSize: Int = 20) -> (

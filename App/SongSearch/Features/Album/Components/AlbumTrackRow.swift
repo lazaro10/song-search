@@ -36,8 +36,11 @@ struct AlbumTrackRow: View {
                 Rectangle()
                     .fill(palette.hairline)
                     .frame(height: 0.5)
+                    .accessibilityHidden(true)
             }
         }
+        .accessibilityElement(children: .combine)
+        .accessibilityLabel("Track \(number), \(song.name), \(formatDuration(song.duration))")
     }
 
     private func formatDuration(_ seconds: TimeInterval) -> String {

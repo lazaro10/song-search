@@ -10,5 +10,6 @@ struct PlayerArtwork: View {
             .scaleEffect(isPlaying ? 1.0 : 0.92)
             .animation(.spring(response: 0.45, dampingFraction: 0.75), value: isPlaying)
             .padding(.vertical, 24)
+            .accessibilityHidden(true)
     }
 }
