@@ -23,4 +23,26 @@ import SongAPI
         sut.navigate(to: .album(collectionId: 99))
         #expect(sut.path == [.player(song), .album(collectionId: 99)])
     }
+
+    @Test func navigatingToARouteAlreadyInPathPopsBackToItInsteadOfStacking() {
+        let sut = AppRouter()
+        let songA = SongFixture.make(id: 1)
+        let songB = SongFixture.make(id: 2)
+
+        sut.navigate(to: .player(songA))
+        sut.navigate(to: .album(collectionId: 99))
+        sut.navigate(to: .player(songB))
+        sut.navigate(to: .album(collectionId: 99))
+
+        #expect(sut.path == [.player(songA), .album(collectionId: 99)])
+    }
+
+    @Test func directPathMutationAlsoCollapsesDuplicates() {
+        let sut = AppRouter()
+        let songA = SongFixture.make(id: 1)
+
+        sut.path = [.player(songA), .album(collectionId: 7), .player(songA)]
+
+        #expect(sut.path == [.player(songA)])
+    }
 }
