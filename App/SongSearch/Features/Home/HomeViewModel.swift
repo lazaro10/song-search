@@ -6,34 +6,31 @@ import Storage
 @MainActor
 @Observable
 final class HomeViewModel {
-    var searchTerm: String = ""
-    private(set) var state: HomeViewState = .idle
-    private(set) var isPaginating = false
+    let recentlyPlayedRepository: any RecentlyPlayedRepository
+    let search: SongSearchPagination
+
     private(set) var recentlyPlayed: [Song] = []
     private(set) var restoredFromCache = false
 
-    private let songRepository: SongRepository
-    let recentlyPlayedRepository: any RecentlyPlayedRepository
     private let searchHistoryRepository: any SearchHistoryRepository
-    private let pageSize: Int
-    private let debounceDuration: Duration
-
-    private var currentOffset = 0
-    private var hasMore = true
-    private var debounceTask: Task<Void, Never>?
 
     init(
-        songRepository: SongRepository,
+        songRepository: any SongRepository,
         recentlyPlayedRepository: any RecentlyPlayedRepository,
         searchHistoryRepository: any SearchHistoryRepository,
         pageSize: Int = 20,
         debounceDuration: Duration = .milliseconds(300)
     ) {
-        self.songRepository = songRepository
         self.recentlyPlayedRepository = recentlyPlayedRepository
         self.searchHistoryRepository = searchHistoryRepository
-        self.pageSize = pageSize
-        self.debounceDuration = debounceDuration
+        self.search = SongSearchPagination(
+            repository: songRepository,
+            pageSize: pageSize,
+            debounceDuration: debounceDuration,
+            onInitialPageLoaded: { [searchHistoryRepository] term, songs in
+                await searchHistoryRepository.save(term: term, songs: songs)
+            }
+        )
     }
 
     func onAppear() async {
@@ -42,58 +39,12 @@ final class HomeViewModel {
         _ = await (recent, history)
     }
 
+    /// View hook: called from `.onChange(of: search.term)`. Clears the
+    /// "restored from cache" hint so the section header renders correctly
+    /// and forwards the term change to the pagination engine.
     func processSearchTermChange() {
         restoredFromCache = false
-        debounceTask?.cancel()
-        let trimmed = searchTerm.trimmingCharacters(in: .whitespacesAndNewlines)
-        if trimmed.isEmpty {
-            state = .idle
-            return
-        }
-        debounceTask = Task { [weak self] in
-            guard let self else { return }
-            try? await Task.sleep(for: self.debounceDuration)
-            guard !Task.isCancelled else { return }
-            await self.runInitialSearch(term: trimmed)
-        }
-    }
-
-    func loadMoreIfNeeded() async {
-        guard case let .content(songs) = state, hasMore, !isPaginating else { return }
-        let trimmed = searchTerm.trimmingCharacters(in: .whitespacesAndNewlines)
-        guard !trimmed.isEmpty else { return }
-
-        isPaginating = true
-        defer { isPaginating = false }
-
-        do {
-            let more = try await songRepository.searchSongs(
-                term: trimmed,
-                limit: pageSize,
-                offset: currentOffset
-            )
-            currentOffset += more.count
-            if more.count < pageSize { hasMore = false }
-            if !more.isEmpty {
-                state = .content(songs: songs + more)
-            }
-        } catch {
-            // Silent failure on pagination — keep existing content visible.
-        }
-    }
-
-    /// Re-runs the last failed search. Wired to the "Try Again" button on the
-    /// error state. No-op when there's no search term.
-    func retry() async {
-        debounceTask?.cancel()
-        let trimmed = searchTerm.trimmingCharacters(in: .whitespacesAndNewlines)
-        guard !trimmed.isEmpty else { return }
-        await runInitialSearch(term: trimmed)
-    }
-
-    // Test hook: awaits any in-flight debounced search.
-    func waitForPendingSearch() async {
-        _ = await debounceTask?.value
+        search.processTermChange()
     }
 
     private func loadRecentlyPlayed() async {
@@ -102,33 +53,9 @@ final class HomeViewModel {
 
     private func restoreLastSearch() async {
         guard let snapshot = await searchHistoryRepository.lastSearch() else { return }
-        guard searchTerm.isEmpty, state == .idle else { return }
-        state = .content(songs: snapshot.songs)
-        restoredFromCache = true
-        currentOffset = snapshot.songs.count
-        hasMore = false
-    }
-
-    private func runInitialSearch(term: String) async {
-        state = .loading
-        currentOffset = 0
-        hasMore = true
-        do {
-            let songs = try await songRepository.searchSongs(
-                term: term,
-                limit: pageSize,
-                offset: 0
-            )
-            currentOffset = songs.count
-            hasMore = songs.count == pageSize
-            if songs.isEmpty {
-                state = .empty
-            } else {
-                state = .content(songs: songs)
-                await searchHistoryRepository.save(term: term, songs: songs)
-            }
-        } catch {
-            state = .error(message: error.localizedDescription)
+        search.seedFromCache(songs: snapshot.songs)
+        if case .content = search.state {
+            restoredFromCache = true
         }
     }
 }
