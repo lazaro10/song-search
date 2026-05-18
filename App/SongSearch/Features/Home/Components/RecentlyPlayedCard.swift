@@ -9,7 +9,7 @@ struct RecentlyPlayedCard: View {
 
     var body: some View {
         VStack(alignment: .leading, spacing: 8) {
-            CoverArtView(url: song.artworkURL, size: 96, cornerRadius: 12)
+            DSCoverArt(url: song.artworkURL, size: 96, cornerRadius: 12)
             Text(song.name)
                 .font(.dsCaption)
                 .foregroundStyle(palette.text)

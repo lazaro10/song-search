@@ -1,28 +1,40 @@
 import SwiftUI
-import CoreGraphics
-import ImageIO
 import Networking
-import DesignSystem
 
-struct CoverArtView: View {
+/// Cached square cover artwork. Reads from `ImageDiskCache` first so it stays
+/// useful offline; falls back to a `music.note` placeholder when no image is
+/// available.
+///
+/// Automatically retries the load when `NetworkReachability` flips from offline
+/// back to online (via the `retryToken` baked into the task id).
+///
+/// Pass an `accessibilityLabel` when the image conveys information not already
+/// available to assistive tech via adjacent text; otherwise it's marked
+/// decorative.
+public struct DSCoverArt: View {
     @Environment(\.dsPalette) private var palette
     @Environment(NetworkReachability.self) private var reachability
 
-    let url: URL?
-    let size: CGFloat
-    let cornerRadius: CGFloat
-    let accessibilityLabel: String?
+    private let url: URL?
+    private let size: CGFloat
+    private let cornerRadius: CGFloat
+    private let accessibilityLabel: String?
 
     @State private var image: Image?
 
-    init(url: URL?, size: CGFloat, cornerRadius: CGFloat, accessibilityLabel: String? = nil) {
+    public init(
+        url: URL?,
+        size: CGFloat,
+        cornerRadius: CGFloat,
+        accessibilityLabel: String? = nil
+    ) {
         self.url = url
         self.size = size
         self.cornerRadius = cornerRadius
         self.accessibilityLabel = accessibilityLabel
     }
 
-    var body: some View {
+    public var body: some View {
         Group {
             if let image {
                 image
@@ -50,30 +62,7 @@ struct CoverArtView: View {
             image = nil
             return
         }
-
-        if let data = ImageDiskCache.shared.data(for: url),
-           let cached = Self.makeImage(from: data) {
-            image = cached
-            return
-        }
-
-        do {
-            let (data, _) = try await URLSession.shared.data(from: url)
-            ImageDiskCache.shared.save(data, for: url)
-            if let fetched = Self.makeImage(from: data) {
-                image = fetched
-            }
-        } catch {
-            // Network failure — keep showing the placeholder.
-        }
-    }
-
-    private static func makeImage(from data: Data) -> Image? {
-        guard
-            let source = CGImageSourceCreateWithData(data as CFData, nil),
-            let cgImage = CGImageSourceCreateImageAtIndex(source, 0, nil)
-        else { return nil }
-        return Image(decorative: cgImage, scale: 1, orientation: .up)
+        image = await DSImageLoader.load(from: url)
     }
 
     private var placeholder: some View {

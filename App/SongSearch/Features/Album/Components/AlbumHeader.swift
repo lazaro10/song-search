@@ -9,7 +9,7 @@ struct AlbumHeader: View {
 
     var body: some View {
         VStack(spacing: 4) {
-            CoverArtView(url: album.artworkURL, size: 196, cornerRadius: 18)
+            DSCoverArt(url: album.artworkURL, size: 196, cornerRadius: 18)
                 .shadow(color: .black.opacity(0.18), radius: 24, y: 14)
                 .padding(.bottom, 14)
 

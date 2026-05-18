@@ -17,6 +17,9 @@ let project = Project(
             bundleId: "com.lazaro.songsearch.designsystem",
             deploymentTargets: deploymentTargets,
             sources: ["Sources/**/*.swift"],
+            dependencies: [
+                .project(target: "Networking", path: "../Networking"),
+            ],
             settings: .settings(base: baseSettings)
         ),
         .target(

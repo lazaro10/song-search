@@ -47,7 +47,7 @@ struct MoreOptionsView: View {
 
     private var songHeader: some View {
         HStack(spacing: 12) {
-            CoverArtView(url: viewModel.song.artworkURL, size: 48, cornerRadius: 8)
+            DSCoverArt(url: viewModel.song.artworkURL, size: 48, cornerRadius: 8)
 
             VStack(alignment: .leading, spacing: 2) {
                 Text(viewModel.song.name)

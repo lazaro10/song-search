@@ -11,7 +11,7 @@ struct SongRow: View {
 
     var body: some View {
         HStack(spacing: 12) {
-            CoverArtView(url: song.artworkURL, size: 48, cornerRadius: 8)
+            DSCoverArt(url: song.artworkURL, size: 48, cornerRadius: 8)
 
             VStack(alignment: .leading, spacing: 2) {
                 Text(song.name)
