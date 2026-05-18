@@ -11,6 +11,7 @@ struct RootView: View {
     @State private var reachability = NetworkReachability()
     @State private var songRepository: any SongRepository
     @State private var recentlyPlayedRepository: any RecentlyPlayedRepository
+    @State private var searchHistoryRepository: any SearchHistoryRepository
 
     init() {
         let container = (try? StorageContainer.make()) ?? (try! StorageContainer.makeInMemory())
@@ -19,6 +20,7 @@ struct RootView: View {
         let cachingRepo = CachingSongRepository(wrapped: networkRepo, albumCache: albumCache)
         _songRepository = State(initialValue: cachingRepo)
         _recentlyPlayedRepository = State(initialValue: SwiftDataRecentlyPlayedRepository(container: container))
+        _searchHistoryRepository = State(initialValue: UserDefaultsSearchHistoryRepository())
     }
 
     var body: some View {
@@ -32,7 +34,8 @@ struct RootView: View {
                 NavigationStack(path: $router.path) {
                     HomeBuilder.build(
                         songRepository: songRepository,
-                        recentlyPlayedRepository: recentlyPlayedRepository
+                        recentlyPlayedRepository: recentlyPlayedRepository,
+                        searchHistoryRepository: searchHistoryRepository
                     )
                     .navigationDestination(for: AppRoute.self) { route in
                         switch route {

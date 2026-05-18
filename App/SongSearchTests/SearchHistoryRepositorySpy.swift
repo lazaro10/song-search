@@ -1,6 +1,6 @@
 import Foundation
 import SongAPI
-@testable import SongSearch
+import Storage
 
 final class SearchHistoryRepositorySpy: SearchHistoryRepository, @unchecked Sendable {
     struct SaveCall: Equatable {

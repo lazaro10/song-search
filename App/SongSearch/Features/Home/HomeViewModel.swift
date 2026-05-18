@@ -14,7 +14,7 @@ final class HomeViewModel {
 
     private let songRepository: SongRepository
     let recentlyPlayedRepository: any RecentlyPlayedRepository
-    private let searchHistoryRepository: SearchHistoryRepository
+    private let searchHistoryRepository: any SearchHistoryRepository
     private let pageSize: Int
     private let debounceDuration: Duration
 
@@ -25,7 +25,7 @@ final class HomeViewModel {
     init(
         songRepository: SongRepository,
         recentlyPlayedRepository: any RecentlyPlayedRepository,
-        searchHistoryRepository: SearchHistoryRepository,
+        searchHistoryRepository: any SearchHistoryRepository,
         pageSize: Int = 20,
         debounceDuration: Duration = .milliseconds(300)
     ) {

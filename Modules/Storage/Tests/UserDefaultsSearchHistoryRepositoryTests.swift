@@ -1,7 +1,7 @@
 import Foundation
 import Testing
 import SongAPI
-@testable import SongSearch
+@testable import Storage
 
 @Suite struct UserDefaultsSearchHistoryRepositoryTests {
     @Test func lastSearchReturnsNilWhenStoreIsEmpty() async {
@@ -13,8 +13,8 @@ import SongAPI
     @Test func saveAndLoadRoundtripsSnapshot() async {
         let sut = makeSUT()
         let songs = [
-            SongFixture.make(id: 1, name: "Daniel"),
-            SongFixture.make(id: 2, name: "Hey Jude"),
+            makeSong(id: 1, name: "Daniel"),
+            makeSong(id: 2, name: "Hey Jude"),
         ]
 
         await sut.save(term: "elton", songs: songs)
@@ -27,8 +27,8 @@ import SongAPI
     @Test func saveOverwritesPreviousSnapshot() async {
         let sut = makeSUT()
 
-        await sut.save(term: "first", songs: [SongFixture.make(id: 1)])
-        await sut.save(term: "second", songs: [SongFixture.make(id: 2)])
+        await sut.save(term: "first", songs: [makeSong(id: 1)])
+        await sut.save(term: "second", songs: [makeSong(id: 2)])
         let result = await sut.lastSearch()
 
         #expect(result?.term == "second")
@@ -56,5 +56,18 @@ import SongAPI
         let defaults = UserDefaults(suiteName: suiteName)!
         defaults.removePersistentDomain(forName: suiteName)
         return defaults
+    }
+
+    private func makeSong(id: Int = 1, name: String = "Sample") -> Song {
+        Song(
+            id: id,
+            name: name,
+            artistName: "Artist",
+            albumName: nil,
+            albumId: nil,
+            artworkURL: nil,
+            previewURL: nil,
+            duration: 0
+        )
     }
 }

@@ -6,9 +6,9 @@ enum HomeBuilder {
     @MainActor
     static func build(
         songRepository: any SongRepository,
-        recentlyPlayedRepository: any RecentlyPlayedRepository
+        recentlyPlayedRepository: any RecentlyPlayedRepository,
+        searchHistoryRepository: any SearchHistoryRepository
     ) -> some View {
-        let searchHistoryRepository = UserDefaultsSearchHistoryRepository()
         let viewModel = HomeViewModel(
             songRepository: songRepository,
             recentlyPlayedRepository: recentlyPlayedRepository,
