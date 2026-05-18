@@ -16,7 +16,7 @@ public final class NetworkReachability {
     public init(initialState: Bool = true) {
         self.isOnline = initialState
         self.monitor = NWPathMonitor()
-        self.queue = DispatchQueue(label: "com.lazaro.songsearch.reachability")
+        self.queue = DispatchQueue(label: "com.songsearch.reachability")
 
         monitor.pathUpdateHandler = { [weak self] path in
             let online = path.status == .satisfied
