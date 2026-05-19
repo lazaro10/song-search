@@ -16,6 +16,10 @@ final class SongSearchPagination {
     var term: String = ""
     private(set) var state: HomeViewState = .idle
     private(set) var isPaginating = false
+    /// Non-nil when the last `loadMoreIfNeeded` failed. The content state is
+    /// preserved so the user keeps seeing what they had; the view shows a
+    /// retry affordance based on this.
+    private(set) var paginationError: String?
 
     private let repository: any SongRepository
     private let pageSize: Int
@@ -57,13 +61,15 @@ final class SongSearchPagination {
 
     /// Pagination hook for the last visible cell. No-op outside of the content
     /// state, when there's nothing more to fetch, or while another page is in
-    /// flight. Failures are swallowed to keep the current results visible.
+    /// flight. Keeps the current results visible on failure and surfaces the
+    /// error via `paginationError` so the view can offer a retry.
     func loadMoreIfNeeded() async {
         guard case let .content(songs) = state, hasMore, !isPaginating else { return }
         let trimmed = term.trimmingCharacters(in: .whitespacesAndNewlines)
         guard !trimmed.isEmpty else { return }
 
         isPaginating = true
+        paginationError = nil
         defer { isPaginating = false }
 
         do {
@@ -78,8 +84,15 @@ final class SongSearchPagination {
                 state = .content(songs: songs + more)
             }
         } catch {
-            // Silent failure on pagination — keep existing content visible.
+            paginationError = error.localizedDescription
         }
+    }
+
+    /// View hook for the "tap to retry" affordance on the pagination footer.
+    /// Clears the previous error and re-runs `loadMoreIfNeeded`.
+    func retryPagination() async {
+        paginationError = nil
+        await loadMoreIfNeeded()
     }
 
     /// Re-runs the last failed search. Wired to the "Try Again" button in the
@@ -110,6 +123,7 @@ final class SongSearchPagination {
         state = .loading
         currentOffset = 0
         hasMore = true
+        paginationError = nil
         do {
             let songs = try await repository.searchSongs(
                 term: term,

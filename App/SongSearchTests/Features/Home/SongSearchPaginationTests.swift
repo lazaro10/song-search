@@ -123,7 +123,7 @@ import SongAPI
         #expect(repo.searchCalls.isEmpty)
     }
 
-    @Test func loadMoreSilentlyKeepsExistingContentOnFailure() async {
+    @Test func loadMoreKeepsExistingContentAndSurfacesPaginationErrorOnFailure() async {
         let (sut, repo) = makeSUT(pageSize: 2)
         repo.stubbedSongs = [
             SongFixture.make(id: 1),
@@ -142,6 +142,74 @@ import SongAPI
         } else {
             Issue.record("Expected .content to remain, got \(sut.state)")
         }
+        #expect(sut.paginationError == SampleError.network.localizedDescription)
+    }
+
+    @Test func retryPaginationClearsErrorAndReRunsFetch() async {
+        let (sut, repo) = makeSUT(pageSize: 2)
+        repo.stubbedSongs = [
+            SongFixture.make(id: 1),
+            SongFixture.make(id: 2),
+        ]
+        sut.term = "x"
+        sut.processTermChange()
+        await sut.waitForPendingSearch()
+
+        repo.errorToThrow = SampleError.network
+        await sut.loadMoreIfNeeded()
+        #expect(sut.paginationError != nil)
+
+        repo.errorToThrow = nil
+        repo.stubbedSongs = [
+            SongFixture.make(id: 3),
+            SongFixture.make(id: 4),
+        ]
+        await sut.retryPagination()
+
+        #expect(sut.paginationError == nil)
+        if case let .content(songs) = sut.state {
+            #expect(songs.map(\.id) == [1, 2, 3, 4])
+        } else {
+            Issue.record("Expected .content with new page, got \(sut.state)")
+        }
+    }
+
+    @Test func successfulLoadMoreClearsPriorPaginationError() async {
+        let (sut, repo) = makeSUT(pageSize: 2)
+        repo.stubbedSongs = [SongFixture.make(id: 1), SongFixture.make(id: 2)]
+        sut.term = "x"
+        sut.processTermChange()
+        await sut.waitForPendingSearch()
+
+        repo.errorToThrow = SampleError.network
+        await sut.loadMoreIfNeeded()
+        #expect(sut.paginationError != nil)
+
+        repo.errorToThrow = nil
+        repo.stubbedSongs = [SongFixture.make(id: 3)]
+        await sut.loadMoreIfNeeded()
+
+        #expect(sut.paginationError == nil)
+    }
+
+    @Test func initialSearchClearsPriorPaginationError() async {
+        let (sut, repo) = makeSUT(pageSize: 2)
+        repo.stubbedSongs = [SongFixture.make(id: 1), SongFixture.make(id: 2)]
+        sut.term = "x"
+        sut.processTermChange()
+        await sut.waitForPendingSearch()
+
+        repo.errorToThrow = SampleError.network
+        await sut.loadMoreIfNeeded()
+        #expect(sut.paginationError != nil)
+
+        repo.errorToThrow = nil
+        repo.stubbedSongs = [SongFixture.make(id: 99)]
+        sut.term = "y"
+        sut.processTermChange()
+        await sut.waitForPendingSearch()
+
+        #expect(sut.paginationError == nil)
     }
 
     @Test func retryReRunsLastSearchFromOffsetZero() async {

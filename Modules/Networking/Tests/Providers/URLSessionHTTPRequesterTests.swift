@@ -111,20 +111,39 @@ struct URLSessionHTTPRequesterTests {
         }
     }
 
-    @Test func throwsInvalidURLWhenPathHasNoLeadingSlash() async {
+    @Test func normalizesTrailingSlashInBaseURLAgainstLeadingSlashInPath() async throws {
         let sut = makeSUT()
         URLProtocolSpy.responder = { _ in (Self.okResponse(), Data()) }
 
-        await #expect(throws: NetworkError.invalidURL) {
-            _ = try await sut.request(
-                baseURL: URL(string: "https://api.example.com")!,
-                path: "no-leading-slash",
-                method: .get,
-                query: [:],
-                body: nil,
-                headers: [:]
-            )
-        }
+        _ = try await sut.request(
+            baseURL: URL(string: "https://api.example.com/")!,
+            path: "/v1/songs",
+            method: .get,
+            query: [:],
+            body: nil,
+            headers: [:]
+        )
+
+        let captured = try #require(URLProtocolSpy.capturedRequests.first)
+        #expect(captured.url?.path == "/v1/songs")
+        #expect(captured.url?.absoluteString.contains("//v1/songs") == false)
+    }
+
+    @Test func acceptsPathWithoutLeadingSlash() async throws {
+        let sut = makeSUT()
+        URLProtocolSpy.responder = { _ in (Self.okResponse(), Data()) }
+
+        _ = try await sut.request(
+            baseURL: URL(string: "https://api.example.com")!,
+            path: "v1/songs",
+            method: .get,
+            query: [:],
+            body: nil,
+            headers: [:]
+        )
+
+        let captured = try #require(URLProtocolSpy.capturedRequests.first)
+        #expect(captured.url?.path == "/v1/songs")
     }
 
     @Test func throwsHttpErrorOnNon2xx() async {

@@ -31,6 +31,16 @@ final class PlayerViewModel {
         self.skipInterval = skipInterval
     }
 
+    /// Loads the song's preview, starts playback, and then observes the player's
+    /// update stream until cancellation.
+    ///
+    /// Designed to be invoked from a SwiftUI `.task { await viewModel.start() }`:
+    /// the `for await` loop runs until the player's stream finishes or the
+    /// surrounding Task is cancelled (which happens when the view disappears).
+    /// The `defer { audioPlayer.pause() }` then halts playback, so the audio
+    /// stops cleanly when the user leaves the screen. If you call `start()`
+    /// from a context that isn't cancelled on view disappear, you're
+    /// responsible for stopping playback yourself.
     func start() async {
         await recentlyPlayedRepository.add(song)
 

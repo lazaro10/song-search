@@ -36,10 +36,10 @@ final class URLSessionHTTPRequester: HTTPRequester {
     }
 
     private func makeURL(baseURL: URL, path: String, query: [String: String]) -> URL? {
-        guard var components = URLComponents(url: baseURL, resolvingAgainstBaseURL: false) else {
+        let urlWithPath = baseURL.appending(path: path)
+        guard var components = URLComponents(url: urlWithPath, resolvingAgainstBaseURL: false) else {
             return nil
         }
-        components.path = (components.path + path)
         if !query.isEmpty {
             components.queryItems = query
                 .sorted { $0.key < $1.key }

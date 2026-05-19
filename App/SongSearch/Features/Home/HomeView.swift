@@ -79,22 +79,17 @@ struct HomeView: View {
                 }
                 .buttonStyle(.plain)
                 .onAppear {
-                    if song.id == songs.last?.id {
+                    // Trigger pagination a few rows before the bottom so the
+                    // next page is already arriving by the time the user gets
+                    // there. `loadMoreIfNeeded` self-guards via isPaginating.
+                    if index == max(0, songs.count - 3) {
                         Task { await viewModel.search.loadMoreIfNeeded() }
                     }
                 }
             }
 
-            if viewModel.search.isPaginating {
-                VStack(spacing: 6) {
-                    DSSpinner()
-                    Text("Loading more songs…")
-                        .font(.dsCaptionSmall)
-                        .foregroundStyle(palette.textSecondary)
-                }
-                .frame(maxWidth: .infinity)
+            paginationFooter
                 .padding(.vertical, 18)
-            }
 
         case .empty:
             DSEmptyState(
@@ -111,6 +106,32 @@ struct HomeView: View {
                 actionTitle: "Try Again",
                 action: { Task { await viewModel.search.retry() } }
             )
+        }
+    }
+
+    @ViewBuilder
+    private var paginationFooter: some View {
+        if viewModel.search.isPaginating {
+            VStack(spacing: 6) {
+                DSSpinner()
+                Text("Loading more songs…")
+                    .font(.dsCaptionSmall)
+                    .foregroundStyle(palette.textSecondary)
+            }
+            .frame(maxWidth: .infinity)
+        } else if let message = viewModel.search.paginationError {
+            VStack(spacing: 8) {
+                Text(message)
+                    .font(.dsCaptionSmall)
+                    .foregroundStyle(palette.textSecondary)
+                    .multilineTextAlignment(.center)
+                Button("Tap to retry") {
+                    Task { await viewModel.search.retryPagination() }
+                }
+                .font(.dsCaption)
+                .tint(.accentColor)
+            }
+            .frame(maxWidth: .infinity)
         }
     }
 }
