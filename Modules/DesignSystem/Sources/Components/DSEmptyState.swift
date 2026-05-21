@@ -24,7 +24,7 @@ public struct DSEmptyState: View {
     }
 
     public var body: some View {
-        VStack(spacing: 14) {
+        VStack(spacing: DSSpacing.medium) {
             ZStack {
                 Circle()
                     .fill(palette.surface)
@@ -49,15 +49,15 @@ public struct DSEmptyState: View {
                     Text(actionTitle)
                         .font(.dsBody)
                         .foregroundStyle(.white)
-                        .padding(.horizontal, 20)
+                        .padding(.horizontal, DSSpacing.spacious)
                         .frame(minHeight: 40)
                         .background(Color.accentColor, in: Capsule())
                 }
                 .buttonStyle(.plain)
-                .padding(.top, 4)
+                .padding(.top, DSSpacing.tiny)
             }
         }
-        .padding(.horizontal, 32)
-        .padding(.vertical, 40)
+        .padding(.horizontal, DSSpacing.huge)
+        .padding(.vertical, DSSpacing.huge)
     }
 }

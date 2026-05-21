@@ -59,8 +59,8 @@ struct AlbumView: View {
                     Color.clear.frame(height: 60)
 
                     AlbumHeader(album: album)
-                        .padding(.top, 18)
-                        .padding(.bottom, 20)
+                        .padding(.top, DSSpacing.large)
+                        .padding(.bottom, DSSpacing.spacious)
 
                     AlbumActions(
                         onPlay: {
@@ -74,7 +74,7 @@ struct AlbumView: View {
                             }
                         }
                     )
-                    .padding(.bottom, 12)
+                    .padding(.bottom, DSSpacing.medium)
 
                     LazyVStack(spacing: 0) {
                         ForEach(Array(album.songs.enumerated()), id: \.element.id) { index, song in
@@ -88,8 +88,8 @@ struct AlbumView: View {
                             .buttonStyle(.plain)
                         }
                     }
-                    .padding(.horizontal, 20)
-                    .padding(.bottom, 32)
+                    .padding(.horizontal, DSSpacing.spacious)
+                    .padding(.bottom, DSSpacing.huge)
                 }
             }
         }

@@ -10,7 +10,7 @@ struct AlbumTrackRow: View {
     let showDivider: Bool
 
     var body: some View {
-        HStack(spacing: 16) {
+        HStack(spacing: DSSpacing.large) {
             Text("\(number)")
                 .font(.dsCaption)
                 .foregroundStyle(palette.textSecondary)
@@ -22,14 +22,14 @@ struct AlbumTrackRow: View {
                 .foregroundStyle(palette.text)
                 .lineLimit(1)
 
-            Spacer(minLength: 8)
+            Spacer(minLength: DSSpacing.small)
 
             Text(formatDuration(song.duration))
                 .font(.dsCaption)
                 .foregroundStyle(palette.textSecondary)
                 .monospacedDigit()
         }
-        .padding(.vertical, 12)
+        .padding(.vertical, DSSpacing.medium)
         .contentShape(Rectangle())
         .overlay(alignment: .bottom) {
             if showDivider {

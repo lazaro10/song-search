@@ -25,7 +25,7 @@ struct PlayerView: View {
                     isPlaying: viewModel.isPlaying
                 )
 
-                VStack(spacing: 4) {
+                VStack(spacing: DSSpacing.tiny) {
                     Text(viewModel.song.name)
                         .font(.dsScreenTitle)
                         .foregroundStyle(palette.text)
@@ -36,14 +36,14 @@ struct PlayerView: View {
                         .foregroundStyle(palette.textSecondary)
                         .lineLimit(1)
                 }
-                .padding(.horizontal, 24)
-                .padding(.top, 8)
+                .padding(.horizontal, DSSpacing.big)
+                .padding(.top, DSSpacing.small)
 
                 PlayerProgress(
                     currentTime: viewModel.currentTime,
                     duration: viewModel.duration
                 )
-                .padding(.top, 24)
+                .padding(.top, DSSpacing.big)
 
                 PlayerControls(
                     isPlaying: viewModel.isPlaying,
@@ -52,10 +52,10 @@ struct PlayerView: View {
                     onSkipForward: { viewModel.skipForward() }
                 )
 
-                Spacer(minLength: 16)
+                Spacer(minLength: DSSpacing.large)
 
                 PlayerAlbumPill(song: viewModel.song)
-                    .padding(.bottom, 24)
+                    .padding(.bottom, DSSpacing.big)
             }
 
             if let message = viewModel.errorMessage {

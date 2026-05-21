@@ -10,7 +10,7 @@ struct PlayerControls: View {
     let onSkipForward: () -> Void
 
     var body: some View {
-        HStack(spacing: 36) {
+        HStack(spacing: DSSpacing.huge) {
             secondaryButton(systemImage: "backward.fill", size: 26, action: onSkipBack)
                 .accessibilityLabel("Skip backward")
 
@@ -32,7 +32,7 @@ struct PlayerControls: View {
             secondaryButton(systemImage: "forward.fill", size: 26, action: onSkipForward)
                 .accessibilityLabel("Skip forward")
         }
-        .padding(.top, 34)
+        .padding(.top, DSSpacing.huge)
     }
 
     private func secondaryButton(systemImage: String, size: CGFloat, action: @escaping () -> Void) -> some View {

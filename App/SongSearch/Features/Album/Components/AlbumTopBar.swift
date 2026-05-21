@@ -21,8 +21,8 @@ struct AlbumTopBar: View {
                 .frame(width: 36, height: 36)
                 .accessibilityHidden(true)
         }
-        .padding(.horizontal, 16)
-        .padding(.top, 8)
+        .padding(.horizontal, DSSpacing.large)
+        .padding(.top, DSSpacing.small)
     }
 
     private func circleButton(systemImage: String, action: @escaping () -> Void) -> some View {

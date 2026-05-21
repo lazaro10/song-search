@@ -10,7 +10,7 @@ struct PlayerArtwork: View {
             .shadow(color: .black.opacity(0.18), radius: 30, y: 18)
             .scaleEffect(isPlaying ? 1.0 : 0.92)
             .animation(.spring(response: 0.45, dampingFraction: 0.75), value: isPlaying)
-            .padding(.vertical, 24)
+            .padding(.vertical, DSSpacing.big)
             .accessibilityHidden(true)
     }
 }

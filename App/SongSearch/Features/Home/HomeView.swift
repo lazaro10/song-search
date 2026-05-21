@@ -14,13 +14,13 @@ struct HomeView: View {
         ScrollView {
             LazyVStack(spacing: 0) {
                 HomeTitleBar()
-                    .padding(.horizontal, 20)
-                    .padding(.top, 8)
-                    .padding(.bottom, 14)
+                    .padding(.horizontal, DSSpacing.spacious)
+                    .padding(.top, DSSpacing.small)
+                    .padding(.bottom, DSSpacing.medium)
 
                 HomeSearchBar(text: $search.term)
-                    .padding(.horizontal, 20)
-                    .padding(.bottom, 18)
+                    .padding(.horizontal, DSSpacing.spacious)
+                    .padding(.bottom, DSSpacing.large)
 
                 if search.term.isEmpty, !viewModel.recentlyPlayed.isEmpty {
                     RecentlyPlayedRail(songs: viewModel.recentlyPlayed)
@@ -28,7 +28,7 @@ struct HomeView: View {
 
                 resultsSection
             }
-            .padding(.bottom, 32)
+            .padding(.bottom, DSSpacing.huge)
         }
         .background(palette.background.ignoresSafeArea())
         .toolbar(.hidden, for: .navigationBar)
@@ -57,12 +57,12 @@ struct HomeView: View {
                     title: "Search for a song",
                     message: "Type a song or artist name above to start exploring."
                 )
-                .padding(.top, 24)
+                .padding(.top, DSSpacing.big)
             }
 
         case .loading:
             HStack { Spacer(); DSSpinner(); Spacer() }
-                .padding(.vertical, 40)
+                .padding(.vertical, DSSpacing.huge)
 
         case let .content(songs):
             if !viewModel.restoredFromCache {
@@ -89,7 +89,7 @@ struct HomeView: View {
             }
 
             paginationFooter
-                .padding(.vertical, 18)
+                .padding(.vertical, DSSpacing.large)
 
         case .empty:
             DSEmptyState(
@@ -112,7 +112,7 @@ struct HomeView: View {
     @ViewBuilder
     private var paginationFooter: some View {
         if viewModel.search.isPaginating {
-            VStack(spacing: 6) {
+            VStack(spacing: DSSpacing.small) {
                 DSSpinner()
                 Text("Loading more songs…")
                     .font(.dsCaptionSmall)
@@ -120,7 +120,7 @@ struct HomeView: View {
             }
             .frame(maxWidth: .infinity)
         } else if let message = viewModel.search.paginationError {
-            VStack(spacing: 8) {
+            VStack(spacing: DSSpacing.small) {
                 Text(message)
                     .font(.dsCaptionSmall)
                     .foregroundStyle(palette.textSecondary)

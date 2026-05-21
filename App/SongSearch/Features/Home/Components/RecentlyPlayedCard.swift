@@ -8,7 +8,7 @@ struct RecentlyPlayedCard: View {
     let song: Song
 
     var body: some View {
-        VStack(alignment: .leading, spacing: 8) {
+        VStack(alignment: .leading, spacing: DSSpacing.small) {
             DSCoverArt(url: song.artworkURL, size: 96, cornerRadius: 12)
             Text(song.name)
                 .font(.dsCaption)

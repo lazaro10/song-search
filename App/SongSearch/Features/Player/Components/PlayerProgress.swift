@@ -13,11 +13,11 @@ struct PlayerProgress: View {
     }
 
     var body: some View {
-        VStack(spacing: 8) {
+        VStack(spacing: DSSpacing.small) {
             progressBar
             timestamps
         }
-        .padding(.horizontal, 28)
+        .padding(.horizontal, DSSpacing.big)
         .accessibilityElement(children: .ignore)
         .accessibilityLabel("Playback progress")
         .accessibilityValue("\(format(currentTime)) of \(format(duration))")

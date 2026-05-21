@@ -21,8 +21,8 @@ struct PlayerTopBar: View {
             circleButton(systemImage: "ellipsis", action: onMore)
                 .accessibilityLabel("More options")
         }
-        .padding(.horizontal, 16)
-        .padding(.top, 8)
+        .padding(.horizontal, DSSpacing.large)
+        .padding(.top, DSSpacing.small)
     }
 
     private func circleButton(systemImage: String, action: @escaping () -> Void) -> some View {

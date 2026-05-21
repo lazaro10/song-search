@@ -7,7 +7,7 @@ struct HomeSearchBar: View {
     @FocusState private var isFocused: Bool
 
     var body: some View {
-        HStack(spacing: 8) {
+        HStack(spacing: DSSpacing.small) {
             Image(systemName: "magnifyingglass")
                 .font(.system(size: 17))
                 .foregroundStyle(palette.textSecondary)
@@ -34,7 +34,7 @@ struct HomeSearchBar: View {
                 .accessibilityLabel("Clear search")
             }
         }
-        .padding(.horizontal, 12)
+        .padding(.horizontal, DSSpacing.medium)
         .frame(height: 38)
         .background(palette.surface, in: RoundedRectangle(cornerRadius: 12, style: .continuous))
         .overlay {

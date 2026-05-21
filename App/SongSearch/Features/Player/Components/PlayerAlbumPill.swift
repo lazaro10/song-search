@@ -10,7 +10,7 @@ struct PlayerAlbumPill: View {
     var body: some View {
         if let albumName = song.albumName, let albumId = song.albumId {
             NavigationLink(value: AppRoute.album(collectionId: albumId)) {
-                HStack(spacing: 6) {
+                HStack(spacing: DSSpacing.small) {
                     Image(systemName: "opticaldisc")
                         .font(.system(size: 13, weight: .medium))
                         .foregroundStyle(palette.textSecondary)
@@ -19,8 +19,8 @@ struct PlayerAlbumPill: View {
                         .font(.dsCaption)
                         .foregroundStyle(palette.text)
                 }
-                .padding(.horizontal, 16)
-                .padding(.vertical, 8)
+                .padding(.horizontal, DSSpacing.large)
+                .padding(.vertical, DSSpacing.small)
                 .background(
                     Capsule().fill(palette.text.opacity(0.04))
                 )

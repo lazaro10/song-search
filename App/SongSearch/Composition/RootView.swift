@@ -73,7 +73,7 @@ private struct OfflineBanner: View {
 
     var body: some View {
         if !reachability.isOnline {
-            HStack(spacing: 8) {
+            HStack(spacing: DSSpacing.small) {
                 Image(systemName: "wifi.slash")
                     .font(.system(size: 13, weight: .semibold))
                     .accessibilityHidden(true)
@@ -81,10 +81,10 @@ private struct OfflineBanner: View {
                     .font(.dsCaptionSmall)
             }
             .foregroundStyle(palette.text)
-            .padding(.horizontal, 14)
-            .padding(.vertical, 8)
+            .padding(.horizontal, DSSpacing.medium)
+            .padding(.vertical, DSSpacing.small)
             .background(.thinMaterial, in: Capsule())
-            .padding(.top, 4)
+            .padding(.top, DSSpacing.tiny)
             .transition(.move(edge: .top).combined(with: .opacity))
             .accessibilityElement(children: .combine)
             .accessibilityLabel("Offline. Showing cached results.")

@@ -18,7 +18,7 @@ struct SplashView: View {
             )
             .ignoresSafeArea()
 
-            VStack(spacing: 28) {
+            VStack(spacing: DSSpacing.big) {
                 ZStack {
                     RoundedRectangle(cornerRadius: 32, style: .continuous)
                         .fill(Color.white.opacity(0.12))
@@ -32,7 +32,7 @@ struct SplashView: View {
                     DSAppMark(size: 86, color: .white)
                 }
 
-                VStack(spacing: 8) {
+                VStack(spacing: DSSpacing.small) {
                     Text("Song Search")
                         .font(.system(size: 30, weight: .bold))
                         .foregroundStyle(.white)
@@ -46,6 +46,7 @@ struct SplashView: View {
             VStack {
                 Spacer()
                 DSSplashDots(color: .white)
+                    // Keeps the dots clear of the home indicator.
                     .padding(.bottom, 80)
             }
         }

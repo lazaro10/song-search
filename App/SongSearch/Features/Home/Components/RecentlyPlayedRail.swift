@@ -10,7 +10,7 @@ struct RecentlyPlayedRail: View {
             DSSectionHeader(title: "Recently Played")
 
             ScrollView(.horizontal, showsIndicators: false) {
-                HStack(spacing: 14) {
+                HStack(spacing: DSSpacing.medium) {
                     ForEach(songs) { song in
                         NavigationLink(value: AppRoute.player(song)) {
                             RecentlyPlayedCard(song: song)
@@ -18,9 +18,9 @@ struct RecentlyPlayedRail: View {
                         .buttonStyle(.plain)
                     }
                 }
-                .padding(.horizontal, 20)
-                .padding(.bottom, 20)
-                .padding(.top, 4)
+                .padding(.horizontal, DSSpacing.spacious)
+                .padding(.bottom, DSSpacing.spacious)
+                .padding(.top, DSSpacing.tiny)
             }
         }
     }

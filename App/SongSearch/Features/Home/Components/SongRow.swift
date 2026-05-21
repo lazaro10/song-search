@@ -10,10 +10,10 @@ struct SongRow: View {
     let onMore: () -> Void
 
     var body: some View {
-        HStack(spacing: 12) {
+        HStack(spacing: DSSpacing.medium) {
             DSCoverArt(url: song.artworkURL, size: 48, cornerRadius: 8)
 
-            VStack(alignment: .leading, spacing: 2) {
+            VStack(alignment: .leading, spacing: DSSpacing.micro) {
                 Text(song.name)
                     .font(.dsItemTitle)
                     .foregroundStyle(palette.text)
@@ -26,7 +26,7 @@ struct SongRow: View {
             .accessibilityElement(children: .combine)
             .accessibilityLabel("\(song.name), \(song.artistName), \(formatDuration(song.duration))")
 
-            Spacer(minLength: 4)
+            Spacer(minLength: DSSpacing.tiny)
 
             Text(formatDuration(song.duration))
                 .font(.dsCaption)
@@ -44,14 +44,15 @@ struct SongRow: View {
             .buttonStyle(.plain)
             .accessibilityLabel("More options for \(song.name)")
         }
-        .padding(.horizontal, 12)
-        .padding(.vertical, 8)
+        .padding(.horizontal, DSSpacing.medium)
+        .padding(.vertical, DSSpacing.small)
         .contentShape(Rectangle())
         .overlay(alignment: .bottom) {
             if showDivider {
                 Rectangle()
                     .fill(palette.hairline)
                     .frame(height: 0.5)
+                    // 72 = cover (48) + HStack gap (12) + horizontal padding (12)
                     .padding(.leading, 72)
                     .accessibilityHidden(true)
             }

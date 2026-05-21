@@ -8,9 +8,9 @@ struct AlbumActions: View {
     let onShuffle: () -> Void
 
     var body: some View {
-        HStack(spacing: 10) {
+        HStack(spacing: DSSpacing.small) {
             Button(action: onPlay) {
-                HStack(spacing: 8) {
+                HStack(spacing: DSSpacing.small) {
                     Image(systemName: "play.fill")
                         .font(.system(size: 14, weight: .bold))
                         .accessibilityHidden(true)
@@ -27,7 +27,7 @@ struct AlbumActions: View {
             .accessibilityHint("Plays the album from the first track")
 
             Button(action: onShuffle) {
-                HStack(spacing: 8) {
+                HStack(spacing: DSSpacing.small) {
                     Image(systemName: "shuffle")
                         .font(.system(size: 14, weight: .bold))
                         .accessibilityHidden(true)
@@ -46,6 +46,6 @@ struct AlbumActions: View {
             .accessibilityLabel("Shuffle")
             .accessibilityHint("Plays a random track from the album")
         }
-        .padding(.horizontal, 20)
+        .padding(.horizontal, DSSpacing.spacious)
     }
 }

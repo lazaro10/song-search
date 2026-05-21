@@ -39,17 +39,17 @@ struct MoreOptionsView: View {
                 }
                 .buttonStyle(.plain)
             }
-            .padding(.top, 8)
+            .padding(.top, DSSpacing.small)
 
             Spacer()
         }
     }
 
     private var songHeader: some View {
-        HStack(spacing: 12) {
+        HStack(spacing: DSSpacing.medium) {
             DSCoverArt(url: viewModel.song.artworkURL, size: 48, cornerRadius: 8)
 
-            VStack(alignment: .leading, spacing: 2) {
+            VStack(alignment: .leading, spacing: DSSpacing.micro) {
                 Text(viewModel.song.name)
                     .font(.dsBody)
                     .foregroundStyle(palette.text)
@@ -62,16 +62,16 @@ struct MoreOptionsView: View {
 
             Spacer()
         }
-        .padding(.horizontal, 20)
-        .padding(.top, 16)
-        .padding(.bottom, 16)
+        .padding(.horizontal, DSSpacing.spacious)
+        .padding(.top, DSSpacing.large)
+        .padding(.bottom, DSSpacing.large)
         .overlay(alignment: .bottom) {
             Rectangle().fill(palette.hairline).frame(height: 0.5)
         }
     }
 
     private func actionRow(icon: String, label: String, sub: String, showDivider: Bool) -> some View {
-        HStack(spacing: 16) {
+        HStack(spacing: DSSpacing.large) {
             ZStack {
                 RoundedRectangle(cornerRadius: 10, style: .continuous)
                     .fill(Color.accentColor.opacity(0.15))
@@ -82,7 +82,7 @@ struct MoreOptionsView: View {
             }
             .accessibilityHidden(true)
 
-            VStack(alignment: .leading, spacing: 1) {
+            VStack(alignment: .leading, spacing: DSSpacing.micro) {
                 Text(label)
                     .font(.dsItemTitle)
                     .foregroundStyle(palette.text)
@@ -98,14 +98,15 @@ struct MoreOptionsView: View {
                 .foregroundStyle(palette.textTertiary)
                 .accessibilityHidden(true)
         }
-        .padding(.horizontal, 20)
-        .padding(.vertical, 14)
+        .padding(.horizontal, DSSpacing.spacious)
+        .padding(.vertical, DSSpacing.medium)
         .contentShape(Rectangle())
         .overlay(alignment: .bottom) {
             if showDivider {
                 Rectangle()
                     .fill(palette.hairline)
                     .frame(height: 0.5)
+                    // 74 = icon container (38) + HStack gap (16) + horizontal padding (20)
                     .padding(.leading, 74)
                     .accessibilityHidden(true)
             }

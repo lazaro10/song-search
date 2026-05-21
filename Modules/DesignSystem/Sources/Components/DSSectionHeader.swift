@@ -25,8 +25,8 @@ public struct DSSectionHeader: View {
                     .tint(.accentColor)
             }
         }
-        .padding(.horizontal, 20)
-        .padding(.top, 6)
-        .padding(.bottom, 10)
+        .padding(.horizontal, DSSpacing.spacious)
+        .padding(.top, DSSpacing.small)
+        .padding(.bottom, DSSpacing.small)
     }
 }

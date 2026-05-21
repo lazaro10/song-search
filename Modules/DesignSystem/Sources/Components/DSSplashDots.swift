@@ -10,7 +10,7 @@ public struct DSSplashDots: View {
     }
 
     public var body: some View {
-        HStack(spacing: 8) {
+        HStack(spacing: DSSpacing.small) {
             ForEach(0..<3) { index in
                 Circle()
                     .fill(color)

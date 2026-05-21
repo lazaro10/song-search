@@ -8,10 +8,10 @@ struct AlbumHeader: View {
     let album: Album
 
     var body: some View {
-        VStack(spacing: 4) {
+        VStack(spacing: DSSpacing.tiny) {
             DSCoverArt(url: album.artworkURL, size: 196, cornerRadius: 18)
                 .shadow(color: .black.opacity(0.18), radius: 24, y: 14)
-                .padding(.bottom, 14)
+                .padding(.bottom, DSSpacing.medium)
 
             Text(album.name)
                 .font(.dsScreenTitle)
@@ -26,9 +26,9 @@ struct AlbumHeader: View {
             Text(metaLine)
                 .font(.dsCaptionSmall)
                 .foregroundStyle(palette.textSecondary)
-                .padding(.top, 2)
+                .padding(.top, DSSpacing.micro)
         }
-        .padding(.horizontal, 24)
+        .padding(.horizontal, DSSpacing.big)
         .accessibilityElement(children: .combine)
         .accessibilityLabel("\(album.name) by \(album.artistName). \(metaLine)")
         .accessibilityAddTraits(.isHeader)
