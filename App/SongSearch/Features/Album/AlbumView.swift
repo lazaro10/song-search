@@ -25,13 +25,13 @@ struct AlbumView: View {
                 content(album: album)
             case .empty:
                 DSEmptyState(
-                    systemImage: "music.note.list",
+                    icon: .trackList,
                     title: L10n.Album.noTracksTitle,
                     message: L10n.Album.noTracksMessage
                 )
             case let .error(message):
                 DSEmptyState(
-                    systemImage: "exclamationmark.triangle",
+                    icon: .warning,
                     title: L10n.Common.errorTitle,
                     message: message,
                     actionTitle: L10n.Common.tryAgain,

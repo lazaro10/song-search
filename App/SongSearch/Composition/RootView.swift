@@ -75,7 +75,7 @@ private struct OfflineBanner: View {
     var body: some View {
         if !reachability.isOnline {
             HStack(spacing: DSSpacing.small) {
-                Image(systemName: "wifi.slash")
+                Image(.offline)
                     .font(.system(size: 13, weight: .semibold))
                     .accessibilityHidden(true)
                 Text(L10n.Offline.banner)

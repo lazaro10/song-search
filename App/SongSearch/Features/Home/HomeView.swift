@@ -54,7 +54,7 @@ struct HomeView: View {
         case .idle:
             if viewModel.recentlyPlayed.isEmpty {
                 DSEmptyState(
-                    systemImage: "magnifyingglass",
+                    icon: .search,
                     title: L10n.Home.emptyTitle,
                     message: L10n.Home.emptyMessage
                 )
@@ -91,14 +91,14 @@ struct HomeView: View {
 
         case .empty:
             DSEmptyState(
-                systemImage: "music.note.list",
+                icon: .trackList,
                 title: L10n.Home.noSongsTitle,
                 message: L10n.Home.noSongsMessage(viewModel.search.term)
             )
 
         case let .error(message):
             DSEmptyState(
-                systemImage: "exclamationmark.triangle",
+                icon: .warning,
                 title: L10n.Common.errorTitle,
                 message: message,
                 actionTitle: L10n.Common.tryAgain,

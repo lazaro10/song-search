@@ -9,7 +9,7 @@ struct HomeSearchBar: View {
 
     var body: some View {
         HStack(spacing: DSSpacing.small) {
-            Image(systemName: "magnifyingglass")
+            Image(.search)
                 .font(.system(size: 17))
                 .foregroundStyle(palette.textSecondary)
 
@@ -25,7 +25,7 @@ struct HomeSearchBar: View {
                 Button {
                     text = ""
                 } label: {
-                    Image(systemName: "xmark")
+                    Image(.clear)
                         .font(.system(size: 10, weight: .bold))
                         .foregroundStyle(palette.background)
                         .frame(width: 18, height: 18)

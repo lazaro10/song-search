@@ -21,7 +21,7 @@ struct MoreOptionsView: View {
                         onSelectAlbum(albumId)
                     } label: {
                         actionRow(
-                            icon: "square.stack",
+                            icon: .viewAlbum,
                             label: L10n.MoreOptions.viewAlbum,
                             sub: viewModel.song.albumName ?? L10n.MoreOptions.viewAlbumSub,
                             showDivider: true
@@ -32,7 +32,7 @@ struct MoreOptionsView: View {
 
                 ShareLink(item: viewModel.shareMessage) {
                     actionRow(
-                        icon: "square.and.arrow.up",
+                        icon: .share,
                         label: L10n.MoreOptions.share,
                         sub: L10n.MoreOptions.shareSub,
                         showDivider: false
@@ -71,13 +71,13 @@ struct MoreOptionsView: View {
         }
     }
 
-    private func actionRow(icon: String, label: String, sub: String, showDivider: Bool) -> some View {
+    private func actionRow(icon: DSIcon, label: String, sub: String, showDivider: Bool) -> some View {
         HStack(spacing: DSSpacing.large) {
             ZStack {
                 RoundedRectangle(cornerRadius: 10, style: .continuous)
                     .fill(Color.accentColor.opacity(0.15))
                     .frame(width: 38, height: 38)
-                Image(systemName: icon)
+                Image(icon)
                     .font(.system(size: 18, weight: .medium))
                     .foregroundStyle(.tint)
             }
@@ -94,7 +94,7 @@ struct MoreOptionsView: View {
 
             Spacer()
 
-            Image(systemName: "chevron.right")
+            Image(.disclosure)
                 .font(.system(size: 14, weight: .semibold))
                 .foregroundStyle(palette.textTertiary)
                 .accessibilityHidden(true)

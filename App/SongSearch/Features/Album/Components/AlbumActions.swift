@@ -12,7 +12,7 @@ struct AlbumActions: View {
         HStack(spacing: DSSpacing.small) {
             Button(action: onPlay) {
                 HStack(spacing: DSSpacing.small) {
-                    Image(systemName: "play.fill")
+                    Image(.play)
                         .font(.system(size: 14, weight: .bold))
                         .accessibilityHidden(true)
                     Text(L10n.Album.play)
@@ -29,7 +29,7 @@ struct AlbumActions: View {
 
             Button(action: onShuffle) {
                 HStack(spacing: DSSpacing.small) {
-                    Image(systemName: "shuffle")
+                    Image(.shuffle)
                         .font(.system(size: 14, weight: .bold))
                         .accessibilityHidden(true)
                     Text(L10n.Album.shuffle)

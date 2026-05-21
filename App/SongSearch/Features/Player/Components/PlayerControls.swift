@@ -12,7 +12,7 @@ struct PlayerControls: View {
 
     var body: some View {
         HStack(spacing: DSSpacing.huge) {
-            secondaryButton(systemImage: "backward.fill", size: 26, action: onSkipBack)
+            secondaryButton(icon: .skipBackward, size: 26, action: onSkipBack)
                 .accessibilityLabel(L10n.A11y.skipBackward)
 
             Button(action: onPlayPause) {
@@ -21,7 +21,7 @@ struct PlayerControls: View {
                         .fill(Color.accentColor)
                         .frame(width: 76, height: 76)
                         .shadow(color: Color.accentColor.opacity(0.4), radius: 14, y: 10)
-                    Image(systemName: isPlaying ? "pause.fill" : "play.fill")
+                    Image(isPlaying ? .pause : .play)
                         .font(.system(size: 30, weight: .bold))
                         .foregroundStyle(.white)
                         .offset(x: isPlaying ? 0 : 2)
@@ -30,15 +30,15 @@ struct PlayerControls: View {
             .buttonStyle(.plain)
             .accessibilityLabel(isPlaying ? L10n.A11y.pause : L10n.A11y.play)
 
-            secondaryButton(systemImage: "forward.fill", size: 26, action: onSkipForward)
+            secondaryButton(icon: .skipForward, size: 26, action: onSkipForward)
                 .accessibilityLabel(L10n.A11y.skipForward)
         }
         .padding(.top, DSSpacing.huge)
     }
 
-    private func secondaryButton(systemImage: String, size: CGFloat, action: @escaping () -> Void) -> some View {
+    private func secondaryButton(icon: DSIcon, size: CGFloat, action: @escaping () -> Void) -> some View {
         Button(action: action) {
-            Image(systemName: systemImage)
+            Image(icon)
                 .font(.system(size: size, weight: .semibold))
                 .foregroundStyle(palette.text)
                 .frame(width: 56, height: 56)

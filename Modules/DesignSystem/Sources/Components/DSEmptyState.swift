@@ -3,20 +3,20 @@ import SwiftUI
 public struct DSEmptyState: View {
     @Environment(\.dsPalette) private var palette
 
-    public let systemImage: String
+    public let icon: DSIcon
     public let title: String
     public let message: String
     public let actionTitle: String?
     public let action: (() -> Void)?
 
     public init(
-        systemImage: String,
+        icon: DSIcon,
         title: String,
         message: String,
         actionTitle: String? = nil,
         action: (() -> Void)? = nil
     ) {
-        self.systemImage = systemImage
+        self.icon = icon
         self.title = title
         self.message = message
         self.actionTitle = actionTitle
@@ -29,7 +29,7 @@ public struct DSEmptyState: View {
                 Circle()
                     .fill(palette.surface)
                     .frame(width: 96, height: 96)
-                Image(systemName: systemImage)
+                Image(icon)
                     .font(.system(size: 40, weight: .regular))
                     .foregroundStyle(palette.textSecondary)
             }

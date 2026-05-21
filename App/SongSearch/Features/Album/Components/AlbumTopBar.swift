@@ -9,7 +9,7 @@ struct AlbumTopBar: View {
 
     var body: some View {
         HStack {
-            circleButton(systemImage: "chevron.left", action: onBack)
+            circleButton(icon: .back, action: onBack)
                 .accessibilityLabel(L10n.A11y.back)
             Spacer()
             Text(L10n.Album.title)
@@ -26,9 +26,9 @@ struct AlbumTopBar: View {
         .padding(.top, DSSpacing.small)
     }
 
-    private func circleButton(systemImage: String, action: @escaping () -> Void) -> some View {
+    private func circleButton(icon: DSIcon, action: @escaping () -> Void) -> some View {
         Button(action: action) {
-            Image(systemName: systemImage)
+            Image(icon)
                 .font(.system(size: 18, weight: .medium))
                 .foregroundStyle(palette.text)
                 .frame(width: 36, height: 36)

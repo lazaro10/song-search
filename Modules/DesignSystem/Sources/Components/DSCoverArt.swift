@@ -57,7 +57,7 @@ public struct DSCoverArt: View {
     }
 
     private var placeholder: some View {
-        Image(systemName: "music.note")
+        Image(.note)
             .font(.system(size: size * 0.4, weight: .medium))
             .foregroundStyle(palette.textSecondary)
             .frame(maxWidth: .infinity, maxHeight: .infinity)

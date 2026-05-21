@@ -12,7 +12,7 @@ struct PlayerAlbumPill: View {
         if let albumName = song.albumName, let albumId = song.albumId {
             NavigationLink(value: AppRoute.album(collectionId: albumId)) {
                 HStack(spacing: DSSpacing.small) {
-                    Image(systemName: "opticaldisc")
+                    Image(.album)
                         .font(.system(size: 13, weight: .medium))
                         .foregroundStyle(palette.textSecondary)
                         .accessibilityHidden(true)

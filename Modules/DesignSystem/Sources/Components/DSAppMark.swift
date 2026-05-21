@@ -11,10 +11,10 @@ public struct DSAppMark: View {
 
     public var body: some View {
         ZStack {
-            Image(systemName: "magnifyingglass")
+            Image(.search)
                 .font(.system(size: size, weight: .regular))
                 .foregroundStyle(color)
-            Image(systemName: "music.note")
+            Image(.note)
                 .font(.system(size: size * 0.42, weight: .bold))
                 .foregroundStyle(color)
                 .offset(x: -size * 0.08, y: -size * 0.06)

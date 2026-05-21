@@ -40,7 +40,7 @@ struct SongRow: View {
                 .accessibilityHidden(true)
 
             Button(action: onMore) {
-                Image(systemName: "ellipsis")
+                Image(.more)
                     .font(.system(size: 18))
                     .foregroundStyle(palette.textSecondary)
                     .frame(width: 30, height: 30)
