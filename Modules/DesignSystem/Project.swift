@@ -32,6 +32,7 @@ let project = Project(
             sources: ["Tests/**/*.swift"],
             dependencies: [
                 .target(name: "DesignSystem"),
+                .external(name: "SnapshotTesting"),
             ],
             settings: .settings(base: baseSettings)
         ),
