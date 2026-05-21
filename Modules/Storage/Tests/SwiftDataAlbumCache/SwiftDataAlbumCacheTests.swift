@@ -54,8 +54,6 @@ import SongAPI
         #expect(result?.name == "Album Two")
     }
 
-    // MARK: - Helpers
-
     private func makeSUT() throws -> SwiftDataAlbumCache {
         let container = try StorageContainer.makeInMemory()
         return SwiftDataAlbumCache(container: container)

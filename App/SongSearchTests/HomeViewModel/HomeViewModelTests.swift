@@ -4,10 +4,6 @@ import SongAPI
 import Storage
 @testable import SongSearch
 
-/// Covers Home-specific composition: recently-played loading, search-history
-/// restoration, and the `restoredFromCache` flag.
-///
-/// Search and pagination behavior is covered in `SongSearchPaginationTests`.
 @MainActor
 @Suite struct HomeViewModelTests {
     @Test func initialStateDelegatesToIdleSearch() {
@@ -83,8 +79,6 @@ import Storage
         #expect(historyRepo.saveCalls.first?.term == "beatles")
         #expect(historyRepo.saveCalls.first?.songs.map(\.id) == [1, 2])
     }
-
-    // MARK: - Helpers
 
     private func makeSUT() -> (
         sut: HomeViewModel,

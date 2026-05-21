@@ -73,8 +73,6 @@ import SongAPI
         #expect(result.map(\.id) == [5, 4])
     }
 
-    // MARK: - Helpers
-
     private func makeSUT(maxItems: Int = 20) throws -> SwiftDataRecentlyPlayedRepository {
         let container = try StorageContainer.makeInMemory()
         return SwiftDataRecentlyPlayedRepository(container: container, maxItems: maxItems)

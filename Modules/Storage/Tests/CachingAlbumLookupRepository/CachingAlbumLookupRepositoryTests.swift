@@ -46,8 +46,6 @@ import SongAPI
         #expect(cache.fetchCalls == [999])
     }
 
-    // MARK: - Helpers
-
     private func makeAlbum(id: Int, name: String) -> Album {
         Album(
             id: id, name: name, artistName: "Artist",

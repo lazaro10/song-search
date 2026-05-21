@@ -46,7 +46,6 @@ struct SplashView: View {
             VStack {
                 Spacer()
                 DSSplashDots(color: .white)
-                    // Keeps the dots clear of the home indicator.
                     .padding(.bottom, 80)
             }
         }

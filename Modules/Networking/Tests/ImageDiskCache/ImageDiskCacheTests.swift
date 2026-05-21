@@ -44,8 +44,6 @@ import Testing
         #expect(ImageDiskCache.key(for: urlA) != ImageDiskCache.key(for: urlB))
     }
 
-    // MARK: - Helpers
-
     private func makeSUT() -> ImageDiskCache {
         let temp = FileManager.default.temporaryDirectory
             .appendingPathComponent("ImageDiskCacheTests-\(UUID().uuidString)", isDirectory: true)

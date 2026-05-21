@@ -130,8 +130,6 @@ import AudioPlayer
         #expect(sut.currentTime == 6)
     }
 
-    // MARK: - Helpers
-
     private func makeSUT(skipInterval: TimeInterval = 10) -> (
         sut: PlayerViewModel,
         player: AudioPlayerSpy,

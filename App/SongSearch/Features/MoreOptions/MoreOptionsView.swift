@@ -106,7 +106,6 @@ struct MoreOptionsView: View {
                 Rectangle()
                     .fill(palette.hairline)
                     .frame(height: 0.5)
-                    // 74 = icon container (38) + HStack gap (16) + horizontal padding (20)
                     .padding(.leading, 74)
                     .accessibilityHidden(true)
             }

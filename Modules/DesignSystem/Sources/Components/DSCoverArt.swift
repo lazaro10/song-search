@@ -2,16 +2,6 @@ import SwiftUI
 import ImageLoader
 import Networking
 
-/// Cached square cover artwork. Reads from `ImageDiskCache` first so it stays
-/// useful offline; falls back to a `music.note` placeholder when no image is
-/// available.
-///
-/// Automatically retries the load when `NetworkReachability` flips from offline
-/// back to online (via the `retryToken` baked into the task id).
-///
-/// Pass an `accessibilityLabel` when the image conveys information not already
-/// available to assistive tech via adjacent text; otherwise it's marked
-/// decorative.
 public struct DSCoverArt: View {
     @Environment(\.dsPalette) private var palette
     @Environment(NetworkReachability.self) private var reachability
@@ -74,8 +64,6 @@ public struct DSCoverArt: View {
     }
 }
 
-/// Applies an accessibility label when provided, otherwise hides the cover
-/// from assistive tech (so adjacent text isn't read twice).
 private struct AccessibilityModifier: ViewModifier {
     let label: String?
 

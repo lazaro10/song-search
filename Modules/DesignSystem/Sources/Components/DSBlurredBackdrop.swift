@@ -2,12 +2,6 @@ import SwiftUI
 import ImageLoader
 import Networking
 
-/// Cached, blurred, low-opacity image used as a screen backdrop. Goes through
-/// the same disk-cache pipeline as `DSCoverArt` so backdrops survive offline
-/// and don't double-fetch the same artwork.
-///
-/// Doesn't render any gradient overlay — callers compose one on top to fade
-/// the backdrop into their palette.
 public struct DSBlurredBackdrop: View {
     @Environment(\.dsPalette) private var palette
     @Environment(NetworkReachability.self) private var reachability

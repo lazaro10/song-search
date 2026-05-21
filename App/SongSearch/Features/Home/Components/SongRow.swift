@@ -52,7 +52,6 @@ struct SongRow: View {
                 Rectangle()
                     .fill(palette.hairline)
                     .frame(height: 0.5)
-                    // 72 = cover (48) + HStack gap (12) + horizontal padding (12)
                     .padding(.leading, 72)
                     .accessibilityHidden(true)
             }

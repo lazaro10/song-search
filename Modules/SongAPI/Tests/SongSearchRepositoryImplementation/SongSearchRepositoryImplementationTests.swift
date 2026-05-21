@@ -57,8 +57,6 @@ import Environment
         _ = SongSearchRepositoryImplementation()
     }
 
-    // MARK: - Helpers
-
     private func makeSUT(
         environment: APIEnvironment = .live
     ) -> (sut: SongSearchRepositoryImplementation, httpClient: HTTPClientSpy) {

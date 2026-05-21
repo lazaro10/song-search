@@ -79,9 +79,6 @@ struct HomeView: View {
                 }
                 .buttonStyle(.plain)
                 .onAppear {
-                    // Trigger pagination a few rows before the bottom so the
-                    // next page is already arriving by the time the user gets
-                    // there. `loadMoreIfNeeded` self-guards via isPaginating.
                     if index == max(0, songs.count - 3) {
                         Task { await viewModel.search.loadMoreIfNeeded() }
                     }

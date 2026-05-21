@@ -64,8 +64,6 @@ import Environment
         _ = AlbumLookupRepositoryImplementation()
     }
 
-    // MARK: - Helpers
-
     private func makeSUT(
         environment: APIEnvironment = .live
     ) -> (sut: AlbumLookupRepositoryImplementation, httpClient: HTTPClientSpy) {

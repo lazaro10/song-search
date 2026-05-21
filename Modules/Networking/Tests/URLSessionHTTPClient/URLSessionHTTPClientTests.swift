@@ -67,8 +67,6 @@ import Testing
         _ = URLSessionHTTPClient()
     }
 
-    // MARK: - Helpers
-
     private func makeSUT() -> (
         sut: URLSessionHTTPClient,
         requester: HTTPRequesterSpy,

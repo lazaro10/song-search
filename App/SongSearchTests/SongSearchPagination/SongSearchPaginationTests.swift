@@ -348,8 +348,6 @@ import SongAPI
         #expect(invoked == false)
     }
 
-    // MARK: - Helpers
-
     private func makeSUT(pageSize: Int = 20) -> (
         sut: SongSearchPagination,
         repository: SongSearchRepositorySpy

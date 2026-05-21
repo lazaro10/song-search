@@ -42,8 +42,6 @@ import Testing
         #expect(darkEnv.dsPalette == .dark)
     }
 
-    // MARK: - Helpers
-
     private func rgb(_ color: Color) -> (Int, Int, Int) {
         let resolved = color.resolve(in: EnvironmentValues())
         return (

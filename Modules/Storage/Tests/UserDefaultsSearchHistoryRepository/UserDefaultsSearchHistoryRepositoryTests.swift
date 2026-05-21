@@ -45,8 +45,6 @@ import SongAPI
         #expect(result == nil)
     }
 
-    // MARK: - Helpers
-
     private func makeSUT(key: String = "test-key") -> UserDefaultsSearchHistoryRepository {
         UserDefaultsSearchHistoryRepository(userDefaults: isolatedUserDefaults(), key: key)
     }

@@ -6,8 +6,6 @@ import Observation
 @Observable
 public final class NetworkReachability {
     public private(set) var isOnline: Bool
-    /// Increments each time the network transitions from offline to online.
-    /// Use this to force-retry views/resources that failed while offline.
     public private(set) var retryToken: Int = 0
 
     private let monitor: NWPathMonitor

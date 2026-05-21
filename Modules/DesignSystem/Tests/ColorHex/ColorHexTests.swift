@@ -28,8 +28,6 @@ import Testing
         #expect(a == 0)
     }
 
-    // MARK: - Helpers
-
     private func rgbaComponents(_ color: Color) -> (Int, Int, Int, Int) {
         let resolved = color.resolve(in: EnvironmentValues())
         return (

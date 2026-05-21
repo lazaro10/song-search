@@ -39,9 +39,6 @@ final class HomeViewModel {
         _ = await (recent, history)
     }
 
-    /// View hook: called from `.onChange(of: search.term)`. Clears the
-    /// "restored from cache" hint so the section header renders correctly
-    /// and forwards the term change to the pagination engine.
     func processSearchTermChange() {
         restoredFromCache = false
         search.processTermChange()

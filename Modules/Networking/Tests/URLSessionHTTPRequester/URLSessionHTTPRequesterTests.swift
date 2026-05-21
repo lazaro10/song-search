@@ -162,8 +162,6 @@ struct URLSessionHTTPRequesterTests {
         }
     }
 
-    // MARK: - Helpers
-
     private func makeSUT() -> URLSessionHTTPRequester {
         let configuration = URLSessionConfiguration.ephemeral
         configuration.protocolClasses = [URLProtocolSpy.self]
