@@ -238,11 +238,11 @@ import SongAPI
         #expect(repo.searchCalls.isEmpty)
     }
 
-    @Test func seedFromCacheSetsContentAndDisablesPagination() async {
-        let (sut, repo) = makeSUT()
+    @Test func seedFromCacheSetsContentAndDisablesPaginationWhenSnapshotIsShorterThanPage() async {
+        let (sut, repo) = makeSUT(pageSize: 20)
         let songs = [SongFixture.make(id: 1), SongFixture.make(id: 2)]
 
-        sut.seedFromCache(songs: songs)
+        sut.seedFromCache(term: "beatles", songs: songs)
         await sut.loadMoreIfNeeded()
 
         if case let .content(state) = sut.state {
@@ -253,10 +253,39 @@ import SongAPI
         #expect(repo.searchCalls.isEmpty)
     }
 
+    @Test func seedFromCacheEnablesPaginationWhenSnapshotIsAFullPage() async {
+        let (sut, repo) = makeSUT(pageSize: 2)
+        let cached = [SongFixture.make(id: 1), SongFixture.make(id: 2)]
+
+        sut.seedFromCache(term: "beatles", songs: cached)
+        repo.stubbedSongs = [SongFixture.make(id: 3), SongFixture.make(id: 4)]
+        await sut.loadMoreIfNeeded()
+
+        #expect(repo.searchCalls == [
+            SongRepositorySpy.SearchCall(term: "beatles", limit: 2, offset: 2),
+        ])
+        if case let .content(songs) = sut.state {
+            #expect(songs.map(\.id) == [1, 2, 3, 4])
+        } else {
+            Issue.record("Expected paginated .content, got \(sut.state)")
+        }
+    }
+
+    @Test func seedFromCachePaginationUsesSeededTermNotUserInput() async {
+        let (sut, repo) = makeSUT(pageSize: 2)
+        sut.seedFromCache(term: "beatles", songs: [SongFixture.make(id: 1), SongFixture.make(id: 2)])
+
+        repo.stubbedSongs = [SongFixture.make(id: 3)]
+        await sut.loadMoreIfNeeded()
+
+        #expect(repo.searchCalls.last?.term == "beatles")
+        #expect(sut.term.isEmpty)
+    }
+
     @Test func seedFromCacheIsIgnoredWhenTermIsNotEmpty() {
         let (sut, _) = makeSUT()
         sut.term = "active query"
-        sut.seedFromCache(songs: [SongFixture.make(id: 1)])
+        sut.seedFromCache(term: "beatles", songs: [SongFixture.make(id: 1)])
 
         #expect(sut.state == .idle)
     }

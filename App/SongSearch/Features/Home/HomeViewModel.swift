@@ -53,7 +53,7 @@ final class HomeViewModel {
 
     private func restoreLastSearch() async {
         guard let snapshot = await searchHistoryRepository.lastSearch() else { return }
-        search.seedFromCache(songs: snapshot.songs)
+        search.seedFromCache(term: snapshot.term, songs: snapshot.songs)
         if case .content = search.state {
             restoredFromCache = true
         }

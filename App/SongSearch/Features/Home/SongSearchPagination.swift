@@ -13,6 +13,9 @@ import SongAPI
 @MainActor
 @Observable
 final class SongSearchPagination {
+    /// User-facing input bound to the search field. Empty on a fresh launch,
+    /// stays empty after a cache-seeded restoration so the field doesn't
+    /// "look pre-filled" while the saved results are showing.
     var term: String = ""
     private(set) var state: HomeViewState = .idle
     private(set) var isPaginating = false
@@ -26,6 +29,10 @@ final class SongSearchPagination {
     private let debounceDuration: Duration
     private let onInitialPageLoaded: (String, [Song]) async -> Void
 
+    /// The term the current `state` represents. Tracked separately from `term`
+    /// so pagination works after a cache restore, where `term` is empty but the
+    /// content was fetched for some prior query.
+    private var activeTerm: String = ""
     private var currentOffset = 0
     private var hasMore = true
     private var debounceTask: Task<Void, Never>?
@@ -49,6 +56,7 @@ final class SongSearchPagination {
         let trimmed = term.trimmingCharacters(in: .whitespacesAndNewlines)
         if trimmed.isEmpty {
             state = .idle
+            activeTerm = ""
             return
         }
         debounceTask = Task { [weak self] in
@@ -65,8 +73,7 @@ final class SongSearchPagination {
     /// error via `paginationError` so the view can offer a retry.
     func loadMoreIfNeeded() async {
         guard case let .content(songs) = state, hasMore, !isPaginating else { return }
-        let trimmed = term.trimmingCharacters(in: .whitespacesAndNewlines)
-        guard !trimmed.isEmpty else { return }
+        guard !activeTerm.isEmpty else { return }
 
         isPaginating = true
         paginationError = nil
@@ -74,7 +81,7 @@ final class SongSearchPagination {
 
         do {
             let more = try await repository.searchSongs(
-                term: trimmed,
+                term: activeTerm,
                 limit: pageSize,
                 offset: currentOffset
             )
@@ -105,13 +112,20 @@ final class SongSearchPagination {
     }
 
     /// Seeds the state with a previously cached snapshot without hitting the
-    /// network. Caller is expected to set the term separately if needed.
-    /// Disables pagination since the cached snapshot may not be a full page.
-    func seedFromCache(songs: [Song]) {
-        guard term.isEmpty, state == .idle else { return }
+    /// network. The seeded `term` becomes the engine's active term so
+    /// pagination keeps working as the user scrolls — `loadMoreIfNeeded` will
+    /// fetch the next page under the same term. The user-facing `term` input
+    /// stays untouched.
+    ///
+    /// Pagination is enabled when the snapshot contains a full page; a short
+    /// snapshot is assumed to be the final page.
+    func seedFromCache(term: String, songs: [Song]) {
+        guard self.term.isEmpty, state == .idle else { return }
+        activeTerm = term
         state = .content(songs: songs)
         currentOffset = songs.count
-        hasMore = false
+        hasMore = songs.count == pageSize
+        paginationError = nil
     }
 
     /// Test hook: awaits any in-flight debounced search.
@@ -120,6 +134,7 @@ final class SongSearchPagination {
     }
 
     private func runInitialSearch(term: String) async {
+        activeTerm = term
         state = .loading
         currentOffset = 0
         hasMore = true
