@@ -1,5 +1,6 @@
 import SwiftUI
 import DesignSystem
+import Formatting
 import Localization
 
 struct PlayerProgress: View {
@@ -22,8 +23,8 @@ struct PlayerProgress: View {
         .accessibilityElement(children: .ignore)
         .accessibilityLabel(L10n.A11y.playbackProgress)
         .accessibilityValue(L10n.A11y.playbackValue(
-            current: format(currentTime),
-            total: format(duration)
+            current: currentTime.formattedAsMinutesAndSeconds,
+            total: duration.formattedAsMinutesAndSeconds
         ))
     }
 
@@ -55,17 +56,12 @@ struct PlayerProgress: View {
 
     private var timestamps: some View {
         HStack {
-            Text(format(currentTime))
+            Text(currentTime.formattedAsMinutesAndSeconds)
             Spacer()
-            Text("-\(format(max(0, duration - currentTime)))")
+            Text("-\(max(0, duration - currentTime).formattedAsMinutesAndSeconds)")
         }
         .font(.dsCaptionSmall)
         .foregroundStyle(palette.textSecondary)
         .monospacedDigit()
-    }
-
-    private func format(_ seconds: TimeInterval) -> String {
-        let total = Int(seconds.rounded())
-        return String(format: "%d:%02d", total / 60, total % 60)
     }
 }

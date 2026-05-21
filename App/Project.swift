@@ -34,6 +34,7 @@ let project = Project(
                 .project(target: "AudioPlayer", path: "../Modules/AudioPlayer"),
                 .project(target: "Storage", path: "../Modules/Storage"),
                 .project(target: "Localization", path: "../Modules/Localization"),
+                .project(target: "Formatting", path: "../Modules/Formatting"),
             ],
             settings: .settings(base: baseSettings)
         ),

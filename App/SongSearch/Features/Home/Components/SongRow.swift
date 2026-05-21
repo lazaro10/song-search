@@ -1,6 +1,7 @@
 import SwiftUI
 import SongAPI
 import DesignSystem
+import Formatting
 import Localization
 
 struct SongRow: View {
@@ -28,12 +29,12 @@ struct SongRow: View {
             .accessibilityLabel(L10n.A11y.songLabel(
                 name: song.name,
                 artist: song.artistName,
-                duration: formatDuration(song.duration)
+                duration: song.duration.formattedAsMinutesAndSeconds
             ))
 
             Spacer(minLength: DSSpacing.tiny)
 
-            Text(formatDuration(song.duration))
+            Text(song.duration.formattedAsMinutesAndSeconds)
                 .font(.dsCaption)
                 .foregroundStyle(palette.textSecondary)
                 .monospacedDigit()
@@ -61,10 +62,5 @@ struct SongRow: View {
                     .accessibilityHidden(true)
             }
         }
-    }
-
-    private func formatDuration(_ seconds: TimeInterval) -> String {
-        let total = Int(seconds.rounded())
-        return String(format: "%d:%02d", total / 60, total % 60)
     }
 }
