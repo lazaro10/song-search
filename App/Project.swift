@@ -50,14 +50,15 @@ let project = Project(
             ]
         ),
         .target(
-            name: "SongSearchUITests",
+            name: "SongSearchSnapshotTests",
             destinations: [.iPhone, .iPad],
-            product: .uiTests,
-            bundleId: "com.lazaro.songsearch.uitests",
+            product: .unitTests,
+            bundleId: "com.lazaro.songsearch.snapshottests",
             deploymentTargets: deploymentTargets,
-            sources: ["SongSearchUITests/**/*.swift"],
+            sources: ["SongSearchSnapshotTests/**/*.swift"],
             dependencies: [
                 .target(name: "SongSearch"),
+                .external(name: "SnapshotTesting"),
             ]
         ),
     ],
@@ -66,7 +67,7 @@ let project = Project(
             name: "SongSearch",
             shared: true,
             buildAction: .buildAction(targets: ["SongSearch"]),
-            testAction: .targets(["SongSearchTests", "SongSearchUITests"]),
+            testAction: .targets(["SongSearchTests", "SongSearchSnapshotTests"]),
             runAction: .runAction(configuration: "Debug"),
             archiveAction: .archiveAction(configuration: "Release")
         ),
