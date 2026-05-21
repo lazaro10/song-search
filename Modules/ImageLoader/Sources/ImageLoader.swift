@@ -3,13 +3,11 @@ import CoreGraphics
 import ImageIO
 import Networking
 
-/// Shared image pipeline used by `DSCoverArt` and `DSBlurredBackdrop`.
-///
-/// Reads from `ImageDiskCache.shared` first; on miss, fetches via
-/// `URLSession.shared`, persists the bytes to disk, and decodes through
-/// `CGImageSource` so the rendered `Image` is built without going through
-/// UIKit.
-public enum DSImageLoader {
+/// Shared image pipeline: reads from `ImageDiskCache.shared` first; on miss,
+/// fetches via `URLSession.shared`, persists the bytes to disk, and decodes
+/// through `CGImageSource` so the rendered `Image` is built without going
+/// through UIKit.
+public enum ImageLoader {
     public static func load(from url: URL) async -> Image? {
         if let data = ImageDiskCache.shared.data(for: url),
            let cached = makeImage(from: data) {

@@ -1,4 +1,5 @@
 import SwiftUI
+import ImageLoader
 import Networking
 
 /// Cached, blurred, low-opacity image used as a screen backdrop. Goes through
@@ -68,6 +69,6 @@ public struct DSBlurredBackdrop: View {
             image = nil
             return
         }
-        image = await DSImageLoader.load(from: url)
+        image = await ImageLoader.load(from: url)
     }
 }

@@ -8,40 +8,39 @@ let baseSettings: SettingsDictionary = [
 ]
 
 let project = Project(
-    name: "DesignSystem",
+    name: "ImageLoader",
     targets: [
         .target(
-            name: "DesignSystem",
+            name: "ImageLoader",
             destinations: [.iPhone, .iPad],
             product: .staticFramework,
-            bundleId: "com.lazaro.songsearch.designsystem",
+            bundleId: "com.lazaro.songsearch.imageloader",
             deploymentTargets: deploymentTargets,
             sources: ["Sources/**/*.swift"],
             dependencies: [
-                .project(target: "ImageLoader", path: "../ImageLoader"),
                 .project(target: "Networking", path: "../Networking"),
             ],
             settings: .settings(base: baseSettings)
         ),
         .target(
-            name: "DesignSystemTests",
+            name: "ImageLoaderTests",
             destinations: [.iPhone, .iPad],
             product: .unitTests,
-            bundleId: "com.lazaro.songsearch.designsystem.tests",
+            bundleId: "com.lazaro.songsearch.imageloader.tests",
             deploymentTargets: deploymentTargets,
             sources: ["Tests/**/*.swift"],
             dependencies: [
-                .target(name: "DesignSystem"),
+                .target(name: "ImageLoader"),
             ],
             settings: .settings(base: baseSettings)
         ),
     ],
     schemes: [
         .scheme(
-            name: "DesignSystem",
+            name: "ImageLoader",
             shared: true,
-            buildAction: .buildAction(targets: ["DesignSystem"]),
-            testAction: .targets(["DesignSystemTests"]),
+            buildAction: .buildAction(targets: ["ImageLoader"]),
+            testAction: .targets(["ImageLoaderTests"]),
             runAction: .runAction(configuration: "Debug"),
             archiveAction: .archiveAction(configuration: "Release")
         ),

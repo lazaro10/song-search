@@ -7,6 +7,7 @@ let workspace = Workspace(
         "Modules/AudioPlayer",
         "Modules/DesignSystem",
         "Modules/Environment",
+        "Modules/ImageLoader",
         "Modules/Networking",
         "Modules/SongAPI",
         "Modules/Storage",

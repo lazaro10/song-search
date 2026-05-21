@@ -1,4 +1,5 @@
 import SwiftUI
+import ImageLoader
 import Networking
 
 /// Cached square cover artwork. Reads from `ImageDiskCache` first so it stays
@@ -62,7 +63,7 @@ public struct DSCoverArt: View {
             image = nil
             return
         }
-        image = await DSImageLoader.load(from: url)
+        image = await ImageLoader.load(from: url)
     }
 
     private var placeholder: some View {
