@@ -29,7 +29,7 @@ let project = Project(
             ]),
             dependencies: [
                 .project(target: "Networking", path: "../Modules/Networking"),
-                .project(target: "SongAPI", path: "../Modules/SongAPI"),
+                .project(target: "SongAPI", path: "../APIs/SongAPI"),
                 .project(target: "DesignSystem", path: "../Modules/DesignSystem"),
                 .project(target: "AudioPlayer", path: "../Modules/AudioPlayer"),
                 .project(target: "Storage", path: "../Modules/Storage"),

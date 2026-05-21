@@ -18,8 +18,8 @@ let project = Project(
             deploymentTargets: deploymentTargets,
             sources: ["Sources/**/*.swift"],
             dependencies: [
-                .project(target: "Networking", path: "../Networking"),
-                .project(target: "Environment", path: "../Environment"),
+                .project(target: "Networking", path: "../../Modules/Networking"),
+                .project(target: "Environment", path: "../../Modules/Environment"),
             ],
             settings: .settings(base: baseSettings)
         ),

@@ -18,7 +18,7 @@ let project = Project(
             deploymentTargets: deploymentTargets,
             sources: ["Sources/**/*.swift"],
             dependencies: [
-                .project(target: "SongAPI", path: "../SongAPI"),
+                .project(target: "SongAPI", path: "../../APIs/SongAPI"),
             ],
             settings: .settings(base: baseSettings)
         ),
