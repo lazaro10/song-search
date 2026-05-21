@@ -1,6 +1,7 @@
 import SwiftUI
 import SongAPI
 import DesignSystem
+import Localization
 
 struct SongRow: View {
     @Environment(\.dsPalette) private var palette
@@ -24,7 +25,11 @@ struct SongRow: View {
                     .lineLimit(1)
             }
             .accessibilityElement(children: .combine)
-            .accessibilityLabel("\(song.name), \(song.artistName), \(formatDuration(song.duration))")
+            .accessibilityLabel(L10n.A11y.songLabel(
+                name: song.name,
+                artist: song.artistName,
+                duration: formatDuration(song.duration)
+            ))
 
             Spacer(minLength: DSSpacing.tiny)
 
@@ -42,7 +47,7 @@ struct SongRow: View {
                     .contentShape(Rectangle())
             }
             .buttonStyle(.plain)
-            .accessibilityLabel("More options for \(song.name)")
+            .accessibilityLabel(L10n.A11y.moreOptionsFor(songName: song.name))
         }
         .padding(.horizontal, DSSpacing.medium)
         .padding(.vertical, DSSpacing.small)

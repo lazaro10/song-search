@@ -1,6 +1,7 @@
 import SwiftUI
 import SongAPI
 import DesignSystem
+import Localization
 
 struct AlbumTrackRow: View {
     @Environment(\.dsPalette) private var palette
@@ -40,7 +41,11 @@ struct AlbumTrackRow: View {
             }
         }
         .accessibilityElement(children: .combine)
-        .accessibilityLabel("Track \(number), \(song.name), \(formatDuration(song.duration))")
+        .accessibilityLabel(L10n.A11y.trackLabel(
+            number: number,
+            name: song.name,
+            duration: formatDuration(song.duration)
+        ))
     }
 
     private func formatDuration(_ seconds: TimeInterval) -> String {

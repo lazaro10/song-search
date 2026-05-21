@@ -1,5 +1,6 @@
 import SwiftUI
 import DesignSystem
+import Localization
 
 struct AlbumActions: View {
     @Environment(\.dsPalette) private var palette
@@ -14,7 +15,7 @@ struct AlbumActions: View {
                     Image(systemName: "play.fill")
                         .font(.system(size: 14, weight: .bold))
                         .accessibilityHidden(true)
-                    Text("Play")
+                    Text(L10n.Album.play)
                         .font(.dsBody)
                 }
                 .foregroundStyle(.white)
@@ -23,15 +24,15 @@ struct AlbumActions: View {
                 .shadow(color: Color.accentColor.opacity(0.3), radius: 8, y: 4)
             }
             .buttonStyle(.plain)
-            .accessibilityLabel("Play")
-            .accessibilityHint("Plays the album from the first track")
+            .accessibilityLabel(L10n.Album.play)
+            .accessibilityHint(L10n.Album.playHint)
 
             Button(action: onShuffle) {
                 HStack(spacing: DSSpacing.small) {
                     Image(systemName: "shuffle")
                         .font(.system(size: 14, weight: .bold))
                         .accessibilityHidden(true)
-                    Text("Shuffle")
+                    Text(L10n.Album.shuffle)
                         .font(.dsBody)
                 }
                 .foregroundStyle(palette.text)
@@ -43,8 +44,8 @@ struct AlbumActions: View {
                 )
             }
             .buttonStyle(.plain)
-            .accessibilityLabel("Shuffle")
-            .accessibilityHint("Plays a random track from the album")
+            .accessibilityLabel(L10n.Album.shuffle)
+            .accessibilityHint(L10n.Album.shuffleHint)
         }
         .padding(.horizontal, DSSpacing.spacious)
     }

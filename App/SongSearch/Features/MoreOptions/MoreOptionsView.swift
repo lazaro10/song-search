@@ -1,6 +1,7 @@
 import SwiftUI
 import SongAPI
 import DesignSystem
+import Localization
 
 struct MoreOptionsView: View {
     @Environment(\.dsPalette) private var palette
@@ -21,8 +22,8 @@ struct MoreOptionsView: View {
                     } label: {
                         actionRow(
                             icon: "square.stack",
-                            label: "View Album",
-                            sub: viewModel.song.albumName ?? "Open album",
+                            label: L10n.MoreOptions.viewAlbum,
+                            sub: viewModel.song.albumName ?? L10n.MoreOptions.viewAlbumSub,
                             showDivider: true
                         )
                     }
@@ -32,8 +33,8 @@ struct MoreOptionsView: View {
                 ShareLink(item: viewModel.shareMessage) {
                     actionRow(
                         icon: "square.and.arrow.up",
-                        label: "Share",
-                        sub: "Send to a friend",
+                        label: L10n.MoreOptions.share,
+                        sub: L10n.MoreOptions.shareSub,
                         showDivider: false
                     )
                 }

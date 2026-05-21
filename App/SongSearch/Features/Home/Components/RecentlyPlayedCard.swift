@@ -1,6 +1,7 @@
 import SwiftUI
 import SongAPI
 import DesignSystem
+import Localization
 
 struct RecentlyPlayedCard: View {
     @Environment(\.dsPalette) private var palette
@@ -21,7 +22,7 @@ struct RecentlyPlayedCard: View {
         }
         .frame(width: 96, alignment: .leading)
         .accessibilityElement(children: .combine)
-        .accessibilityLabel("\(song.name), \(song.artistName)")
-        .accessibilityHint("Opens the player")
+        .accessibilityLabel(L10n.A11y.songCardLabel(name: song.name, artist: song.artistName))
+        .accessibilityHint(L10n.A11y.opensPlayer)
     }
 }

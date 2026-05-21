@@ -1,5 +1,6 @@
 import SwiftUI
 import DesignSystem
+import Localization
 
 struct SplashView: View {
     @Environment(\.dsAccent) private var accent
@@ -33,11 +34,11 @@ struct SplashView: View {
                 }
 
                 VStack(spacing: DSSpacing.small) {
-                    Text("Song Search")
+                    Text(L10n.Splash.appName)
                         .font(.system(size: 30, weight: .bold))
                         .foregroundStyle(.white)
 
-                    Text("Find the songs you love.")
+                    Text(L10n.Splash.tagline)
                         .font(.system(size: 14))
                         .foregroundStyle(.white.opacity(0.7))
                 }
@@ -54,6 +55,6 @@ struct SplashView: View {
             onComplete()
         }
         .accessibilityElement(children: .combine)
-        .accessibilityLabel("Song Search. Loading.")
+        .accessibilityLabel(L10n.A11y.splash)
     }
 }

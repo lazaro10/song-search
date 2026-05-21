@@ -2,6 +2,7 @@ import SwiftUI
 import SongAPI
 import Networking
 import DesignSystem
+import Localization
 import Storage
 
 struct RootView: View {
@@ -77,7 +78,7 @@ private struct OfflineBanner: View {
                 Image(systemName: "wifi.slash")
                     .font(.system(size: 13, weight: .semibold))
                     .accessibilityHidden(true)
-                Text("You\u{2019}re offline · Showing cached results")
+                Text(L10n.Offline.banner)
                     .font(.dsCaptionSmall)
             }
             .foregroundStyle(palette.text)
@@ -87,7 +88,7 @@ private struct OfflineBanner: View {
             .padding(.top, DSSpacing.tiny)
             .transition(.move(edge: .top).combined(with: .opacity))
             .accessibilityElement(children: .combine)
-            .accessibilityLabel("Offline. Showing cached results.")
+            .accessibilityLabel(L10n.A11y.offlineBanner)
         }
     }
 }

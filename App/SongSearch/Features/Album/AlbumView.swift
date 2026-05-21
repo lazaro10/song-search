@@ -1,6 +1,7 @@
 import SwiftUI
 import SongAPI
 import DesignSystem
+import Localization
 
 struct AlbumView: View {
     @Environment(\.dsPalette) private var palette
@@ -17,7 +18,7 @@ struct AlbumView: View {
             case .idle, .loading:
                 VStack {
                     Spacer()
-                    DSSpinner()
+                    DSSpinner(accessibilityLabel: L10n.A11y.loading)
                     Spacer()
                 }
             case let .content(album):
@@ -25,15 +26,15 @@ struct AlbumView: View {
             case .empty:
                 DSEmptyState(
                     systemImage: "music.note.list",
-                    title: "No tracks",
-                    message: "This album doesn\u{2019}t have any tracks yet."
+                    title: L10n.Album.noTracksTitle,
+                    message: L10n.Album.noTracksMessage
                 )
             case let .error(message):
                 DSEmptyState(
                     systemImage: "exclamationmark.triangle",
-                    title: "Something went wrong",
+                    title: L10n.Common.errorTitle,
                     message: message,
-                    actionTitle: "Try Again",
+                    actionTitle: L10n.Common.tryAgain,
                     action: { Task { await viewModel.start() } }
                 )
             }

@@ -1,5 +1,6 @@
 import Foundation
 import Observation
+import Localization
 import SongAPI
 
 @MainActor
@@ -16,6 +17,6 @@ final class MoreOptionsViewModel {
     }
 
     var shareMessage: String {
-        "Check out \(song.name) by \(song.artistName)"
+        L10n.MoreOptions.shareMessage(songName: song.name, artistName: song.artistName)
     }
 }

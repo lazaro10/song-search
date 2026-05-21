@@ -1,5 +1,6 @@
 import SwiftUI
 import DesignSystem
+import Localization
 
 struct HomeSearchBar: View {
     @Environment(\.dsPalette) private var palette
@@ -12,7 +13,7 @@ struct HomeSearchBar: View {
                 .font(.system(size: 17))
                 .foregroundStyle(palette.textSecondary)
 
-            TextField("Search songs, artists...", text: $text)
+            TextField(L10n.Home.searchPlaceholder, text: $text)
                 .focused($isFocused)
                 .font(.system(size: 16))
                 .textInputAutocapitalization(.never)
@@ -31,7 +32,7 @@ struct HomeSearchBar: View {
                         .background(Circle().fill(palette.textTertiary))
                 }
                 .buttonStyle(.plain)
-                .accessibilityLabel("Clear search")
+                .accessibilityLabel(L10n.A11y.clearSearch)
             }
         }
         .padding(.horizontal, DSSpacing.medium)

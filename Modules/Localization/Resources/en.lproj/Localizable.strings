@@ -1,0 +1,58 @@
+"home.title" = "Songs";
+"home.search_placeholder" = "Search songs, artists...";
+"home.recently_played" = "Recently Played";
+"home.empty.title" = "Search for a song";
+"home.empty.message" = "Type a song or artist name above to start exploring.";
+"home.results_for" = "Results for \U201C%@\U201D";
+"home.no_songs.title" = "No songs found";
+"home.no_songs.message" = "We couldn\U2019t find anything for \U201C%@\U201D. Try a different song or artist.";
+"home.loading_more" = "Loading more songs\U2026";
+"home.tap_to_retry" = "Tap to retry";
+
+"common.error.title" = "Something went wrong";
+"common.try_again" = "Try Again";
+
+"album.title" = "ALBUM";
+"album.play" = "Play";
+"album.play.hint" = "Plays the album from the first track";
+"album.shuffle" = "Shuffle";
+"album.shuffle.hint" = "Plays a random track from the album";
+"album.meta.prefix" = "Album";
+"album.no_tracks.title" = "No tracks";
+"album.no_tracks.message" = "This album doesn\U2019t have any tracks yet.";
+
+"player.title" = "NOW PLAYING";
+"player.preview_unavailable" = "Preview not available for this song.";
+"player.from_the_album" = "From the album \U00B7 %@";
+
+"more.view_album" = "View Album";
+"more.view_album.sub" = "Open album";
+"more.share" = "Share";
+"more.share.sub" = "Send to a friend";
+"more.share_message" = "Check out %1$@ by %2$@";
+
+"splash.app_name" = "Song Search";
+"splash.tagline" = "Find the songs you love.";
+
+"offline.banner" = "You\U2019re offline \U00B7 Showing cached results";
+
+"a11y.back" = "Back";
+"a11y.more_options" = "More options";
+"a11y.play" = "Play";
+"a11y.pause" = "Pause";
+"a11y.skip_backward" = "Skip backward";
+"a11y.skip_forward" = "Skip forward";
+"a11y.clear_search" = "Clear search";
+"a11y.loading" = "Loading";
+"a11y.playback_progress" = "Playback progress";
+"a11y.playback_value" = "%1$@ of %2$@";
+"a11y.more_options_for" = "More options for %@";
+"a11y.song_label" = "%1$@, %2$@, %3$@";
+"a11y.song_card_label" = "%1$@, %2$@";
+"a11y.opens_player" = "Opens the player";
+"a11y.opens_album" = "Opens the album";
+"a11y.from_the_album" = "From the album %@";
+"a11y.track_label" = "Track %1$d, %2$@, %3$@";
+"a11y.album_header_label" = "%1$@ by %2$@. %3$@";
+"a11y.offline_banner" = "Offline. Showing cached results.";
+"a11y.splash" = "Song Search. Loading.";

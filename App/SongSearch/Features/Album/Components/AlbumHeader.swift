@@ -1,6 +1,7 @@
 import SwiftUI
 import SongAPI
 import DesignSystem
+import Localization
 
 struct AlbumHeader: View {
     @Environment(\.dsPalette) private var palette
@@ -30,14 +31,18 @@ struct AlbumHeader: View {
         }
         .padding(.horizontal, DSSpacing.big)
         .accessibilityElement(children: .combine)
-        .accessibilityLabel("\(album.name) by \(album.artistName). \(metaLine)")
+        .accessibilityLabel(L10n.A11y.albumHeaderLabel(
+            name: album.name,
+            artist: album.artistName,
+            meta: metaLine
+        ))
         .accessibilityAddTraits(.isHeader)
     }
 
     private var metaLine: String {
-        var parts: [String] = ["Album"]
+        var parts: [String] = [L10n.Album.metaPrefix]
         if let year = album.releaseYear { parts.append(String(year)) }
-        parts.append("\(album.trackCount) track\(album.trackCount == 1 ? "" : "s")")
+        parts.append(L10n.Album.trackCount(album.trackCount))
         return parts.joined(separator: " · ")
     }
 }

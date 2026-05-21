@@ -1,6 +1,7 @@
 import SwiftUI
 import SongAPI
 import DesignSystem
+import Localization
 
 struct PlayerAlbumPill: View {
     @Environment(\.dsPalette) private var palette
@@ -15,7 +16,7 @@ struct PlayerAlbumPill: View {
                         .font(.system(size: 13, weight: .medium))
                         .foregroundStyle(palette.textSecondary)
                         .accessibilityHidden(true)
-                    Text("From the album · \(albumName)")
+                    Text(L10n.Player.fromTheAlbum(albumName))
                         .font(.dsCaption)
                         .foregroundStyle(palette.text)
                 }
@@ -29,8 +30,8 @@ struct PlayerAlbumPill: View {
                 )
             }
             .buttonStyle(.plain)
-            .accessibilityLabel("From the album \(albumName)")
-            .accessibilityHint("Opens the album")
+            .accessibilityLabel(L10n.A11y.fromTheAlbum(albumName))
+            .accessibilityHint(L10n.A11y.opensAlbum)
         }
     }
 }

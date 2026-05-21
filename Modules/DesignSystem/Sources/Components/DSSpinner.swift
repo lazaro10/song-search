@@ -4,11 +4,13 @@ public struct DSSpinner: View {
     @Environment(\.dsPalette) private var palette
 
     public let size: CGFloat
+    public let accessibilityLabel: String?
 
     @State private var isAnimating = false
 
-    public init(size: CGFloat = 22) {
+    public init(size: CGFloat = 22, accessibilityLabel: String? = nil) {
         self.size = size
+        self.accessibilityLabel = accessibilityLabel
     }
 
     public var body: some View {
@@ -19,8 +21,21 @@ public struct DSSpinner: View {
             .rotationEffect(.degrees(isAnimating ? 360 : 0))
             .animation(.linear(duration: 0.85).repeatForever(autoreverses: false), value: isAnimating)
             .onAppear { isAnimating = true }
-            .accessibilityElement()
-            .accessibilityLabel("Loading")
-            .accessibilityAddTraits(.updatesFrequently)
+            .modifier(SpinnerAccessibility(label: accessibilityLabel))
+    }
+}
+
+private struct SpinnerAccessibility: ViewModifier {
+    let label: String?
+
+    func body(content: Content) -> some View {
+        if let label {
+            content
+                .accessibilityElement()
+                .accessibilityLabel(label)
+                .accessibilityAddTraits(.updatesFrequently)
+        } else {
+            content.accessibilityHidden(true)
+        }
     }
 }

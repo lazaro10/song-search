@@ -15,8 +15,9 @@ import SongAPI
         #expect(sut.canViewAlbum == false)
     }
 
-    @Test func shareMessageFormatsNameAndArtist() {
+    @Test func shareMessageIncludesNameAndArtist() {
         let sut = MoreOptionsViewModel(song: SongFixture.make(name: "Daniel", artistName: "Elton John"))
-        #expect(sut.shareMessage == "Check out Daniel by Elton John")
+        #expect(sut.shareMessage.contains("Daniel"))
+        #expect(sut.shareMessage.contains("Elton John"))
     }
 }

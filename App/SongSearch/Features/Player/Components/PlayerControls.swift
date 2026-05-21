@@ -1,5 +1,6 @@
 import SwiftUI
 import DesignSystem
+import Localization
 
 struct PlayerControls: View {
     @Environment(\.dsPalette) private var palette
@@ -12,7 +13,7 @@ struct PlayerControls: View {
     var body: some View {
         HStack(spacing: DSSpacing.huge) {
             secondaryButton(systemImage: "backward.fill", size: 26, action: onSkipBack)
-                .accessibilityLabel("Skip backward")
+                .accessibilityLabel(L10n.A11y.skipBackward)
 
             Button(action: onPlayPause) {
                 ZStack {
@@ -27,10 +28,10 @@ struct PlayerControls: View {
                 }
             }
             .buttonStyle(.plain)
-            .accessibilityLabel(isPlaying ? "Pause" : "Play")
+            .accessibilityLabel(isPlaying ? L10n.A11y.pause : L10n.A11y.play)
 
             secondaryButton(systemImage: "forward.fill", size: 26, action: onSkipForward)
-                .accessibilityLabel("Skip forward")
+                .accessibilityLabel(L10n.A11y.skipForward)
         }
         .padding(.top, DSSpacing.huge)
     }

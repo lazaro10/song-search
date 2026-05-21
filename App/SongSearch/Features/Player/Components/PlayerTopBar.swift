@@ -1,5 +1,6 @@
 import SwiftUI
 import DesignSystem
+import Localization
 
 struct PlayerTopBar: View {
     @Environment(\.dsPalette) private var palette
@@ -10,16 +11,16 @@ struct PlayerTopBar: View {
     var body: some View {
         HStack {
             circleButton(systemImage: "chevron.left", action: onBack)
-                .accessibilityLabel("Back")
+                .accessibilityLabel(L10n.A11y.back)
             Spacer()
-            Text("NOW PLAYING")
+            Text(L10n.Player.title)
                 .font(.dsLabelUppercase)
                 .tracking(0.4)
                 .foregroundStyle(palette.textSecondary)
                 .accessibilityAddTraits(.isHeader)
             Spacer()
             circleButton(systemImage: "ellipsis", action: onMore)
-                .accessibilityLabel("More options")
+                .accessibilityLabel(L10n.A11y.moreOptions)
         }
         .padding(.horizontal, DSSpacing.large)
         .padding(.top, DSSpacing.small)

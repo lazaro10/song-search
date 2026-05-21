@@ -1,13 +1,14 @@
 import SwiftUI
 import SongAPI
 import DesignSystem
+import Localization
 
 struct RecentlyPlayedRail: View {
     let songs: [Song]
 
     var body: some View {
         VStack(alignment: .leading, spacing: 0) {
-            DSSectionHeader(title: "Recently Played")
+            DSSectionHeader(title: L10n.Home.recentlyPlayed)
 
             ScrollView(.horizontal, showsIndicators: false) {
                 HStack(spacing: DSSpacing.medium) {

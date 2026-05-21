@@ -1,0 +1,58 @@
+"home.title" = "Canciones";
+"home.search_placeholder" = "Buscar canciones, artistas...";
+"home.recently_played" = "Reproducidas Recientemente";
+"home.empty.title" = "Buscar una canción";
+"home.empty.message" = "Escribe el nombre de una canción o artista para comenzar.";
+"home.results_for" = "Resultados para \U201C%@\U201D";
+"home.no_songs.title" = "No se encontraron canciones";
+"home.no_songs.message" = "No encontramos nada para \U201C%@\U201D. Prueba con otra canción o artista.";
+"home.loading_more" = "Cargando más canciones\U2026";
+"home.tap_to_retry" = "Toca para reintentar";
+
+"common.error.title" = "Algo salió mal";
+"common.try_again" = "Reintentar";
+
+"album.title" = "ÁLBUM";
+"album.play" = "Reproducir";
+"album.play.hint" = "Reproduce el álbum desde la primera pista";
+"album.shuffle" = "Aleatorio";
+"album.shuffle.hint" = "Reproduce una pista aleatoria del álbum";
+"album.meta.prefix" = "Álbum";
+"album.no_tracks.title" = "Sin pistas";
+"album.no_tracks.message" = "Este álbum aún no tiene pistas.";
+
+"player.title" = "REPRODUCIENDO";
+"player.preview_unavailable" = "Vista previa no disponible para esta canción.";
+"player.from_the_album" = "Del álbum \U00B7 %@";
+
+"more.view_album" = "Ver Álbum";
+"more.view_album.sub" = "Abrir álbum";
+"more.share" = "Compartir";
+"more.share.sub" = "Envíalo a un amigo";
+"more.share_message" = "Escucha %1$@ de %2$@";
+
+"splash.app_name" = "Song Search";
+"splash.tagline" = "Encuentra las canciones que amas.";
+
+"offline.banner" = "Estás sin conexión \U00B7 Mostrando resultados en caché";
+
+"a11y.back" = "Atrás";
+"a11y.more_options" = "Más opciones";
+"a11y.play" = "Reproducir";
+"a11y.pause" = "Pausar";
+"a11y.skip_backward" = "Retroceder";
+"a11y.skip_forward" = "Avanzar";
+"a11y.clear_search" = "Borrar búsqueda";
+"a11y.loading" = "Cargando";
+"a11y.playback_progress" = "Progreso de reproducción";
+"a11y.playback_value" = "%1$@ de %2$@";
+"a11y.more_options_for" = "Más opciones para %@";
+"a11y.song_label" = "%1$@, %2$@, %3$@";
+"a11y.song_card_label" = "%1$@, %2$@";
+"a11y.opens_player" = "Abre el reproductor";
+"a11y.opens_album" = "Abre el álbum";
+"a11y.from_the_album" = "Del álbum %@";
+"a11y.track_label" = "Pista %1$d, %2$@, %3$@";
+"a11y.album_header_label" = "%1$@ de %2$@. %3$@";
+"a11y.offline_banner" = "Sin conexión. Mostrando resultados en caché.";
+"a11y.splash" = "Song Search. Cargando.";

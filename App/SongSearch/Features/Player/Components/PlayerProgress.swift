@@ -1,5 +1,6 @@
 import SwiftUI
 import DesignSystem
+import Localization
 
 struct PlayerProgress: View {
     @Environment(\.dsPalette) private var palette
@@ -19,8 +20,11 @@ struct PlayerProgress: View {
         }
         .padding(.horizontal, DSSpacing.big)
         .accessibilityElement(children: .ignore)
-        .accessibilityLabel("Playback progress")
-        .accessibilityValue("\(format(currentTime)) of \(format(duration))")
+        .accessibilityLabel(L10n.A11y.playbackProgress)
+        .accessibilityValue(L10n.A11y.playbackValue(
+            current: format(currentTime),
+            total: format(duration)
+        ))
     }
 
     private var progressBar: some View {

@@ -2,6 +2,7 @@ import Foundation
 import Observation
 import SongAPI
 import AudioPlayer
+import Localization
 import Storage
 
 @MainActor
@@ -36,7 +37,7 @@ final class PlayerViewModel {
 
         guard let url = song.previewURL else {
             isLoading = false
-            errorMessage = "Preview not available for this song."
+            errorMessage = L10n.Player.previewUnavailable
             return
         }
         defer { audioPlayer.pause() }

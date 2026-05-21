@@ -1,6 +1,7 @@
 import SwiftUI
 import SongAPI
 import DesignSystem
+import Localization
 
 struct HomeView: View {
     @Environment(\.dsPalette) private var palette
@@ -54,19 +55,19 @@ struct HomeView: View {
             if viewModel.recentlyPlayed.isEmpty {
                 DSEmptyState(
                     systemImage: "magnifyingglass",
-                    title: "Search for a song",
-                    message: "Type a song or artist name above to start exploring."
+                    title: L10n.Home.emptyTitle,
+                    message: L10n.Home.emptyMessage
                 )
                 .padding(.top, DSSpacing.big)
             }
 
         case .loading:
-            HStack { Spacer(); DSSpinner(); Spacer() }
+            HStack { Spacer(); DSSpinner(accessibilityLabel: L10n.A11y.loading); Spacer() }
                 .padding(.vertical, DSSpacing.huge)
 
         case let .content(songs):
             if !viewModel.restoredFromCache {
-                DSSectionHeader(title: "Results for \u{201C}\(viewModel.search.term)\u{201D}")
+                DSSectionHeader(title: L10n.Home.resultsFor(viewModel.search.term))
             }
 
             ForEach(Array(songs.enumerated()), id: \.element.id) { index, song in
@@ -91,16 +92,16 @@ struct HomeView: View {
         case .empty:
             DSEmptyState(
                 systemImage: "music.note.list",
-                title: "No songs found",
-                message: "We couldn\u{2019}t find anything for \u{201C}\(viewModel.search.term)\u{201D}. Try a different song or artist."
+                title: L10n.Home.noSongsTitle,
+                message: L10n.Home.noSongsMessage(viewModel.search.term)
             )
 
         case let .error(message):
             DSEmptyState(
                 systemImage: "exclamationmark.triangle",
-                title: "Something went wrong",
+                title: L10n.Common.errorTitle,
                 message: message,
-                actionTitle: "Try Again",
+                actionTitle: L10n.Common.tryAgain,
                 action: { Task { await viewModel.search.retry() } }
             )
         }
@@ -111,7 +112,7 @@ struct HomeView: View {
         if viewModel.search.isPaginating {
             VStack(spacing: DSSpacing.small) {
                 DSSpinner()
-                Text("Loading more songs…")
+                Text(L10n.Home.loadingMore)
                     .font(.dsCaptionSmall)
                     .foregroundStyle(palette.textSecondary)
             }
@@ -122,7 +123,7 @@ struct HomeView: View {
                     .font(.dsCaptionSmall)
                     .foregroundStyle(palette.textSecondary)
                     .multilineTextAlignment(.center)
-                Button("Tap to retry") {
+                Button(L10n.Home.tapToRetry) {
                     Task { await viewModel.search.retryPagination() }
                 }
                 .font(.dsCaption)
