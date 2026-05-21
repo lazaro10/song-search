@@ -15,7 +15,7 @@ final class HomeViewModel {
     private let searchHistoryRepository: any SearchHistoryRepository
 
     init(
-        songRepository: any SongRepository,
+        songSearchRepository: any SongSearchRepository,
         recentlyPlayedRepository: any RecentlyPlayedRepository,
         searchHistoryRepository: any SearchHistoryRepository,
         pageSize: Int = 20,
@@ -24,7 +24,7 @@ final class HomeViewModel {
         self.recentlyPlayedRepository = recentlyPlayedRepository
         self.searchHistoryRepository = searchHistoryRepository
         self.search = SongSearchPagination(
-            repository: songRepository,
+            repository: songSearchRepository,
             pageSize: pageSize,
             debounceDuration: debounceDuration,
             onInitialPageLoaded: { [searchHistoryRepository] term, songs in

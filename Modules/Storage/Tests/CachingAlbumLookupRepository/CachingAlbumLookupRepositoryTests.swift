@@ -4,27 +4,13 @@ import SongAPI
 @testable import Storage
 
 @MainActor
-@Suite struct CachingSongRepositoryTests {
-    @Test func searchSongsPassesThroughToWrappedRepository() async throws {
-        let wrapped = SongRepositorySpy()
-        wrapped.stubbedSongs = [makeSong(id: 1), makeSong(id: 2)]
-        let sut = CachingSongRepository(wrapped: wrapped, albumCache: AlbumCacheSpy())
-
-        let result = try await sut.searchSongs(term: "beatles", limit: 20, offset: 40)
-
-        #expect(result.map(\.id) == [1, 2])
-        #expect(wrapped.searchCalls.count == 1)
-        #expect(wrapped.searchCalls.first?.term == "beatles")
-        #expect(wrapped.searchCalls.first?.limit == 20)
-        #expect(wrapped.searchCalls.first?.offset == 40)
-    }
-
+@Suite struct CachingAlbumLookupRepositoryTests {
     @Test func albumOnNetworkSuccessSavesToCacheAndReturnsFresh() async throws {
-        let wrapped = SongRepositorySpy()
+        let wrapped = AlbumLookupRepositorySpy()
         let cache = AlbumCacheSpy()
         let fresh = makeAlbum(id: 12345, name: "Fresh")
         wrapped.stubbedAlbum = fresh
-        let sut = CachingSongRepository(wrapped: wrapped, albumCache: cache)
+        let sut = CachingAlbumLookupRepository(wrapped: wrapped, albumCache: cache)
 
         let result = try await sut.album(collectionId: 12345)
 
@@ -34,12 +20,12 @@ import SongAPI
     }
 
     @Test func albumOnNetworkFailureReturnsCachedWhenAvailable() async throws {
-        let wrapped = SongRepositorySpy()
+        let wrapped = AlbumLookupRepositorySpy()
         wrapped.errorToThrow = CachingTestError.offline
         let cache = AlbumCacheSpy()
         let cached = makeAlbum(id: 7, name: "Cached")
         cache.stubbedAlbum = cached
-        let sut = CachingSongRepository(wrapped: wrapped, albumCache: cache)
+        let sut = CachingAlbumLookupRepository(wrapped: wrapped, albumCache: cache)
 
         let result = try await sut.album(collectionId: 7)
 
@@ -49,10 +35,10 @@ import SongAPI
     }
 
     @Test func albumOnNetworkFailureWithEmptyCacheThrowsOriginalError() async {
-        let wrapped = SongRepositorySpy()
+        let wrapped = AlbumLookupRepositorySpy()
         wrapped.errorToThrow = CachingTestError.offline
         let cache = AlbumCacheSpy()
-        let sut = CachingSongRepository(wrapped: wrapped, albumCache: cache)
+        let sut = CachingAlbumLookupRepository(wrapped: wrapped, albumCache: cache)
 
         await #expect(throws: CachingTestError.offline) {
             _ = try await sut.album(collectionId: 999)
@@ -61,14 +47,6 @@ import SongAPI
     }
 
     // MARK: - Helpers
-
-    private func makeSong(id: Int) -> Song {
-        Song(
-            id: id, name: "Song \(id)", artistName: "Artist",
-            albumName: nil, albumId: nil,
-            artworkURL: nil, previewURL: nil, duration: 0
-        )
-    }
 
     private func makeAlbum(id: Int, name: String) -> Album {
         Album(

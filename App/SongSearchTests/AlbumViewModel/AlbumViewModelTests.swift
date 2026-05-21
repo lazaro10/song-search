@@ -63,9 +63,9 @@ import SongAPI
 
     // MARK: - Helpers
 
-    private func makeSUT() -> (sut: AlbumViewModel, repository: SongRepositorySpy) {
-        let repo = SongRepositorySpy()
-        let sut = AlbumViewModel(collectionId: 42, songRepository: repo)
+    private func makeSUT() -> (sut: AlbumViewModel, repository: AlbumLookupRepositorySpy) {
+        let repo = AlbumLookupRepositorySpy()
+        let sut = AlbumViewModel(collectionId: 42, albumLookupRepository: repo)
         return (sut, repo)
     }
 }

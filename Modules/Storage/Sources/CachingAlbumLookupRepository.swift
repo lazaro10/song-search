@@ -1,17 +1,17 @@
 import Foundation
 import SongAPI
 
-public final class CachingSongRepository: SongRepository {
-    private let wrapped: any SongRepository
+/// Decorates an `AlbumLookupRepository`. On a successful network fetch it
+/// persists the album to the cache and returns the fresh copy. On failure it
+/// falls back to the cached copy when present, otherwise rethrows the
+/// original error.
+public final class CachingAlbumLookupRepository: AlbumLookupRepository {
+    private let wrapped: any AlbumLookupRepository
     private let albumCache: any AlbumCache
 
-    public init(wrapped: any SongRepository, albumCache: any AlbumCache) {
+    public init(wrapped: any AlbumLookupRepository, albumCache: any AlbumCache) {
         self.wrapped = wrapped
         self.albumCache = albumCache
-    }
-
-    public func searchSongs(term: String, limit: Int, offset: Int) async throws -> [Song] {
-        try await wrapped.searchSongs(term: term, limit: limit, offset: offset)
     }
 
     public func album(collectionId: Int) async throws -> Album {

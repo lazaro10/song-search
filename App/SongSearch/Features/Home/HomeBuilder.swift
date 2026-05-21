@@ -5,12 +5,12 @@ import Storage
 enum HomeBuilder {
     @MainActor
     static func build(
-        songRepository: any SongRepository,
+        songSearchRepository: any SongSearchRepository,
         recentlyPlayedRepository: any RecentlyPlayedRepository,
         searchHistoryRepository: any SearchHistoryRepository
     ) -> some View {
         let viewModel = HomeViewModel(
-            songRepository: songRepository,
+            songSearchRepository: songSearchRepository,
             recentlyPlayedRepository: recentlyPlayedRepository,
             searchHistoryRepository: searchHistoryRepository
         )

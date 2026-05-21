@@ -8,17 +8,17 @@ final class AlbumViewModel {
     let collectionId: Int
     private(set) var state: AlbumViewState = .idle
 
-    private let songRepository: SongRepository
+    private let albumLookupRepository: any AlbumLookupRepository
 
-    init(collectionId: Int, songRepository: SongRepository) {
+    init(collectionId: Int, albumLookupRepository: any AlbumLookupRepository) {
         self.collectionId = collectionId
-        self.songRepository = songRepository
+        self.albumLookupRepository = albumLookupRepository
     }
 
     func start() async {
         state = .loading
         do {
-            let album = try await songRepository.album(collectionId: collectionId)
+            let album = try await albumLookupRepository.album(collectionId: collectionId)
             state = album.songs.isEmpty ? .empty : .content(album: album)
         } catch {
             state = .error(message: error.localizedDescription)

@@ -2,7 +2,7 @@ import Foundation
 import Networking
 import Environment
 
-public final class SongRepositoryImplementation: SongRepository {
+public final class SongSearchRepositoryImplementation: SongSearchRepository {
     private let httpClient: HTTPClient
     private let environment: APIEnvironment
 
@@ -26,21 +26,4 @@ public final class SongRepositoryImplementation: SongRepository {
         )
         return response.results.compactMap(Song.init(track:))
     }
-
-    public func album(collectionId: Int) async throws -> Album {
-        let response: ITunesSearchResponse = try await httpClient.request(
-            configuration: LookupAlbumRequest(
-                baseURL: environment.itunesBaseURL,
-                collectionId: collectionId
-            )
-        )
-        guard let album = Album(from: response, collectionId: collectionId) else {
-            throw SongRepositoryError.albumNotFound
-        }
-        return album
-    }
-}
-
-public enum SongRepositoryError: Error, Equatable, Sendable {
-    case albumNotFound
 }

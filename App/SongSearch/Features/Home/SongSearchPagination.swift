@@ -24,7 +24,7 @@ final class SongSearchPagination {
     /// retry affordance based on this.
     private(set) var paginationError: String?
 
-    private let repository: any SongRepository
+    private let repository: any SongSearchRepository
     private let pageSize: Int
     private let debounceDuration: Duration
     private let onInitialPageLoaded: (String, [Song]) async -> Void
@@ -38,7 +38,7 @@ final class SongSearchPagination {
     private var debounceTask: Task<Void, Never>?
 
     init(
-        repository: any SongRepository,
+        repository: any SongSearchRepository,
         pageSize: Int = 20,
         debounceDuration: Duration = .milliseconds(300),
         onInitialPageLoaded: @escaping (String, [Song]) async -> Void = { _, _ in }

@@ -88,15 +88,15 @@ import Storage
 
     private func makeSUT() -> (
         sut: HomeViewModel,
-        songRepository: SongRepositorySpy,
+        songSearchRepository: SongSearchRepositorySpy,
         recentlyPlayedRepository: RecentlyPlayedRepositorySpy,
         searchHistoryRepository: SearchHistoryRepositorySpy
     ) {
-        let songRepo = SongRepositorySpy()
+        let songRepo = SongSearchRepositorySpy()
         let recentRepo = RecentlyPlayedRepositorySpy()
         let historyRepo = SearchHistoryRepositorySpy()
         let sut = HomeViewModel(
-            songRepository: songRepo,
+            songSearchRepository: songRepo,
             recentlyPlayedRepository: recentRepo,
             searchHistoryRepository: historyRepo,
             pageSize: 20,

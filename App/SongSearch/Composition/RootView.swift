@@ -9,16 +9,18 @@ struct RootView: View {
     @State private var showSplash = true
     @State private var router = AppRouter()
     @State private var reachability = NetworkReachability()
-    @State private var songRepository: any SongRepository
+    @State private var songSearchRepository: any SongSearchRepository
+    @State private var albumLookupRepository: any AlbumLookupRepository
     @State private var recentlyPlayedRepository: any RecentlyPlayedRepository
     @State private var searchHistoryRepository: any SearchHistoryRepository
 
     init() {
         let container = (try? StorageContainer.make()) ?? (try! StorageContainer.makeInMemory())
         let albumCache = SwiftDataAlbumCache(container: container)
-        let networkRepo = SongRepositoryImplementation()
-        let cachingRepo = CachingSongRepository(wrapped: networkRepo, albumCache: albumCache)
-        _songRepository = State(initialValue: cachingRepo)
+        let networkAlbumLookup = AlbumLookupRepositoryImplementation()
+        let cachingAlbumLookup = CachingAlbumLookupRepository(wrapped: networkAlbumLookup, albumCache: albumCache)
+        _songSearchRepository = State(initialValue: SongSearchRepositoryImplementation())
+        _albumLookupRepository = State(initialValue: cachingAlbumLookup)
         _recentlyPlayedRepository = State(initialValue: SwiftDataRecentlyPlayedRepository(container: container))
         _searchHistoryRepository = State(initialValue: UserDefaultsSearchHistoryRepository())
     }
@@ -33,7 +35,7 @@ struct RootView: View {
             } else {
                 NavigationStack(path: $router.path) {
                     HomeBuilder.build(
-                        songRepository: songRepository,
+                        songSearchRepository: songSearchRepository,
                         recentlyPlayedRepository: recentlyPlayedRepository,
                         searchHistoryRepository: searchHistoryRepository
                     )
@@ -47,7 +49,7 @@ struct RootView: View {
                         case let .album(collectionId):
                             AlbumBuilder.build(
                                 collectionId: collectionId,
-                                songRepository: songRepository
+                                albumLookupRepository: albumLookupRepository
                             )
                         }
                     }

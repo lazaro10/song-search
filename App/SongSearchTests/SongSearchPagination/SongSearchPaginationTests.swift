@@ -44,7 +44,7 @@ import SongAPI
         await sut.waitForPendingSearch()
 
         #expect(repo.searchCalls == [
-            SongRepositorySpy.SearchCall(term: "beatles", limit: 20, offset: 0),
+            SongSearchRepositorySpy.SearchCall(term: "beatles", limit: 20, offset: 0),
         ])
         if case let .content(songs) = sut.state {
             #expect(songs.map(\.id) == [1, 2])
@@ -262,7 +262,7 @@ import SongAPI
         await sut.loadMoreIfNeeded()
 
         #expect(repo.searchCalls == [
-            SongRepositorySpy.SearchCall(term: "beatles", limit: 2, offset: 2),
+            SongSearchRepositorySpy.SearchCall(term: "beatles", limit: 2, offset: 2),
         ])
         if case let .content(songs) = sut.state {
             #expect(songs.map(\.id) == [1, 2, 3, 4])
@@ -292,7 +292,7 @@ import SongAPI
 
     @Test func onInitialPageLoadedCallbackIsInvokedOnSuccess() async {
         var captured: [(term: String, ids: [Int])] = []
-        let repo = SongRepositorySpy()
+        let repo = SongSearchRepositorySpy()
         repo.stubbedSongs = [SongFixture.make(id: 7)]
         let sut = SongSearchPagination(
             repository: repo,
@@ -314,7 +314,7 @@ import SongAPI
 
     @Test func onInitialPageLoadedIsNotInvokedOnEmptyResults() async {
         var invoked = false
-        let repo = SongRepositorySpy()
+        let repo = SongSearchRepositorySpy()
         repo.stubbedSongs = []
         let sut = SongSearchPagination(
             repository: repo,
@@ -332,7 +332,7 @@ import SongAPI
 
     @Test func onInitialPageLoadedIsNotInvokedOnFailure() async {
         var invoked = false
-        let repo = SongRepositorySpy()
+        let repo = SongSearchRepositorySpy()
         repo.errorToThrow = SampleError.network
         let sut = SongSearchPagination(
             repository: repo,
@@ -352,9 +352,9 @@ import SongAPI
 
     private func makeSUT(pageSize: Int = 20) -> (
         sut: SongSearchPagination,
-        repository: SongRepositorySpy
+        repository: SongSearchRepositorySpy
     ) {
-        let repo = SongRepositorySpy()
+        let repo = SongSearchRepositorySpy()
         let sut = SongSearchPagination(
             repository: repo,
             pageSize: pageSize,
