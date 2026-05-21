@@ -14,6 +14,7 @@ managed by [Tuist](https://tuist.io).
 ## Build and run
 
 ```bash
+tuist install
 tuist generate
 open SongSearch.xcworkspace
 ```
@@ -22,12 +23,15 @@ Select the `SongSearch` scheme on an iOS 17+ simulator and press Run.
 
 ## Tests
 
+Run everything (every module + the app, unit + snapshot) in one shot:
+
 ```bash
-xcodebuild -workspace SongSearch.xcworkspace \
-           -scheme SongSearch \
-           -destination 'platform=iOS Simulator,name=iPhone 17' \
-           test
+tuist test
 ```
 
-Each module has its own scheme (`Networking`, `Storage`, `DesignSystem`,
-`SongAPI`, `AudioPlayer`, `Environment`) and can be tested in isolation.
+Each scheme also exposes its own test action, so you can focus on a single
+module from Xcode (Cmd+T) by picking the scheme — for example
+`DesignSystem`, `Networking`, `Storage`, `SongAPI`, `Formatting`,
+`ImageLoader`, `Localization`, `AudioPlayer`, or `Environment`. The
+`SongSearch` scheme runs the app's unit tests plus its snapshot tests;
+design-system snapshots live inside the `DesignSystem` scheme.
